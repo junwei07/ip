@@ -1,8 +1,11 @@
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Miro {
     private boolean isRunning;
     private Scanner sc = new Scanner(System.in);
+    private List<String> taskList = new ArrayList<>();
 
     public Miro() {
         this.isRunning = true;
@@ -17,13 +20,13 @@ public class Miro {
         greet();
         while (isRunning) {
             String input = sc.nextLine().strip().toLowerCase();
-            if (input.equals("bye")) {
+            if (input.equals("list")){
+                getTasks();
+            } else if (input.equals("bye")) {
                 break;
+            } else {
+                addTask(input);
             }
-            Hbar();
-            space();
-            System.out.printf("%s\n", input);
-            Hbar();
         }
         exit();
     }
@@ -34,25 +37,33 @@ public class Miro {
 
     private void greet() {
         space();
-        System.out.println("Hello I'm Miro\n");
+        System.out.println("Hello! I'm Miro.");
         space();
-        System.out.println("What can I do for you?\n");
+        System.out.println("What can I do for you?");
         Hbar();
     };
 
     private void exit() {
         space();
-        System.out.println("GoodBye. Hope to See you again!\n");
+        System.out.println("GoodBye. Hope to See you again!");
+        Hbar();
+    }
+
+    private void addTask(String task) {
+        this.taskList.add(task);
+        Hbar();
+        space();
+        System.out.printf("Added: %s\n", task);
+        Hbar();
+    }
+    private void getTasks() {
+        for (int i = 0; i < taskList.size(); i++) {
+            space();
+            System.out.printf("%d. %s\n", i + 1, taskList.get(i));
+        }
         Hbar();
     }
     public static void main(String[] args) {
         new Miro().run();
-
-//        String logo = " ____        _        \n"
-//                + "|  _ \\ _   _| | _____ \n"
-//                + "| | | | | | | |/ / _ \\\n"
-//                + "| |_| | |_| |   <  __/\n"
-//                + "|____/ \\__,_|_|\\_\\___|\n";
-//        System.out.println("Hello I'm Miro\nWhat can I do for you?");
     }
 }
