@@ -88,34 +88,65 @@ public class Miro {
 
         if (words.length >= 2) {
 
-        if (words[0].equals("todo")) {
+            if (words[0].equals("todo")) {
 
-                for (int i = 1; i < words.length; i++) {
-                    sb.append(words[i]);
-                    sb.append(" ");
-                }
-
-            task = new ToDoTask(sb.toString().strip());
-        } else if (words[0].equals("deadline")) {
-            // find date or time
-            boolean isDate = false;
-            StringBuilder dateSb = new StringBuilder();
-            for (int i = 1; i < words.length; i++) {
-                if (isDate) {
-                    dateSb.append(words[i]);
-                    dateSb.append(" ");
-                } else {
-                    if (words[i].equals("/by")) {
-                       isDate = true;
-                    } else {
+                    for (int i = 1; i < words.length; i++) {
                         sb.append(words[i]);
                         sb.append(" ");
                     }
-                }
-            }
 
-            task = new DeadlineTask(sb.toString().strip(), dateSb.toString().strip());
-        }
+                task = new ToDoTask(sb.toString().strip());
+            } else if (words[0].equals("deadline")) {
+                // find date or time
+                boolean isDate = false;
+                StringBuilder dateSb = new StringBuilder();
+                for (int i = 1; i < words.length; i++) {
+                    if (isDate) {
+                        dateSb.append(words[i]);
+                        dateSb.append(" ");
+                    } else {
+                        if (words[i].equals("/by")) {
+                           isDate = true;
+                        } else {
+                            sb.append(words[i]);
+                            sb.append(" ");
+                        }
+                    }
+                }
+
+                task = new DeadlineTask(sb.toString().strip(), dateSb.toString().strip());
+            } else if (words[0].equals("event")) {
+                boolean isFrom = false;
+                boolean isTo = false;
+
+                StringBuilder fromSb = new StringBuilder();
+                StringBuilder toSb = new StringBuilder();
+
+                for (int i = 1; i < words.length; i++) {
+                    if (isFrom && !words[i].equals("/to")) {
+                        fromSb.append(words[i]);
+                        fromSb.append(" ");
+
+                    } else if (isTo) {
+                        toSb.append(words[i]);
+                        toSb.append(" ");
+                    } else {
+                        if (!words[i].equals("/from") && !words[i].equals("/to")) {
+                            sb.append(words[i]);
+                            sb.append(" ");
+                        }
+                    }
+
+                    if (words[i].equals("/from")) {
+                        isFrom = true;
+                    } else if (words[i].equals("/to")) {
+                        isFrom = false;
+                        isTo = true;
+                    }
+                }
+
+                task = new EventTask(sb.toString().strip(), fromSb.toString().strip(), toSb.toString().strip());
+            }
         } else {
             for (String word : words) {
                 sb.append(word);
