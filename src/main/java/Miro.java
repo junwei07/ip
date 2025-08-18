@@ -82,16 +82,40 @@ public class Miro {
     }
 
     private void addTask(String[] words) {
-        Task task;
+        Task task = null;
         StringBuilder sb = new StringBuilder();
 
+
+        if (words.length >= 2) {
+
         if (words[0].equals("todo")) {
-            if (words.length >= 2) {
+
                 for (int i = 1; i < words.length; i++) {
                     sb.append(words[i]);
+                    sb.append(" ");
+                }
+
+            task = new ToDoTask(sb.toString().strip());
+        } else if (words[0].equals("deadline")) {
+            // find date or time
+            boolean isDate = false;
+            StringBuilder dateSb = new StringBuilder();
+            for (int i = 1; i < words.length; i++) {
+                if (isDate) {
+                    dateSb.append(words[i]);
+                    dateSb.append(" ");
+                } else {
+                    if (words[i].equals("/by")) {
+                       isDate = true;
+                    } else {
+                        sb.append(words[i]);
+                        sb.append(" ");
+                    }
                 }
             }
-            task = new ToDoTask(sb.toString());
+
+            task = new DeadlineTask(sb.toString().strip(), dateSb.toString().strip());
+        }
         } else {
             for (String word : words) {
                 sb.append(word);
@@ -105,6 +129,8 @@ public class Miro {
         System.out.println("Got it. I've added this task:");
         space();
         System.out.printf("%s\n", task);
+        space();
+        System.out.printf("Now you have %d tasks in the list.\n", taskList.size());
         Hbar();
     }
     private void getTasks() {
@@ -123,7 +149,7 @@ public class Miro {
         space();
         System.out.println("Good job! I've marked this task as done");
         space();
-        System.out.println(task.toString());
+        System.out.println(task);
         Hbar();
     }
 
@@ -133,7 +159,7 @@ public class Miro {
         space();
         System.out.println("Ok, I've unmarked this task");
         space();
-        System.out.println(task.toString());
+        System.out.println(task);
         Hbar();
     }
     public static void main(String[] args) {
