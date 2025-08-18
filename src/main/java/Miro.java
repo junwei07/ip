@@ -25,40 +25,39 @@ public class Miro {
             String[] words = input.split(" ");
             if (input.equals("list")) {
                 getTasks();
-            } else if (words.length == 2) {
-                try {
-                    int taskNum = Integer.parseInt(words[1]);
+            } else if (words[0].equals("mark") || words[0].equals("unmark")) {
+                if (words.length == 2) {
+                    try {
+                        int taskNum = Integer.parseInt(words[1]);
 
-                    if (taskNum > 0 && taskNum <= taskList.size()) {
-                        Task task = taskList.get(taskNum - 1);
-                        if (words[0].equals("mark")) {
-                            markTask(task);
-                        } else if (words[0].equals("unmark")) {
-                            unmarkTask(task);
+                        if (taskNum > 0 && taskNum <= taskList.size()) {
+                            Task task = taskList.get(taskNum - 1);
+                            if (words[0].equals("mark")) {
+                                markTask(task);
+                            } else {
+                                unmarkTask(task);
+                            }
+                        } else {
+                            space();
+                            System.out.println("Invalid command!");
+                            Hbar();
                         }
-                    } else {
-                        space();
-                        System.out.println("Invalid command!");
-                        Hbar();
+                    } catch (NumberFormatException e) {
+                        if (words[0].equals("mark") || words[0].equals("unmark")) {
+                            space();
+                            System.out.println("Invalid command!");
+                            Hbar();
+                        } else {
+                            addTask(words);
+                        }
                     }
-                } catch (NumberFormatException e) {
-                    if (words[0].equals("mark") || words[0].equals("unmark")) {
-                        space();
-                        System.out.println("Invalid command!");
-                        Hbar();
-                    } else {
-                        addTask(new Task(input));
-                    }
-
-
                 }
-
-
-        } else if (input.equals("bye")) {
+            } else if (words[0].equals("todo")) {
+                addTask(words);
+            } else if (input.equals("bye")) {
                 break;
             } else {
-                Task task = new Task(input);
-                addTask(task);
+                addTask(words);
             }
         }
         exit();
@@ -82,11 +81,30 @@ public class Miro {
         Hbar();
     }
 
-    private void addTask(Task task) {
+    private void addTask(String[] words) {
+        Task task;
+        StringBuilder sb = new StringBuilder();
+
+        if (words[0].equals("todo")) {
+            if (words.length >= 2) {
+                for (int i = 1; i < words.length; i++) {
+                    sb.append(words[i]);
+                }
+            }
+            task = new ToDoTask(sb.toString());
+        } else {
+            for (String word : words) {
+                sb.append(word);
+            }
+            task = new Task(sb.toString());
+        }
+
         this.taskList.add(task);
         Hbar();
         space();
-        System.out.printf("Added: %s\n", task.getName());
+        System.out.println("Got it. I've added this task:");
+        space();
+        System.out.printf("%s\n", task);
         Hbar();
     }
     private void getTasks() {

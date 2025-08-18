@@ -1,14 +1,14 @@
 public class Task {
-    private final String task;
+    private final String description;
     private boolean isDone;
 
-    public Task(String task) {
-        this.task = task;
+    public Task(String description) {
+        this.description = description;
         this.isDone = false;
     }
 
     public String getName() {
-        return this.task;
+        return this.description;
     }
 
     public void mark() {
@@ -21,6 +21,6 @@ public class Task {
 
     public String toString() {
         String box = isDone ? "[X]" : "[ ]";
-        return box + " " + task;
+        return box + " " + description;
     }
 }
