@@ -86,8 +86,6 @@ public class Miro {
         StringBuilder sb = new StringBuilder();
 
 
-        if (words.length >= 2) {
-
             if (words[0].equals("todo")) {
 
                     for (int i = 1; i < words.length; i++) {
@@ -95,7 +93,11 @@ public class Miro {
                         sb.append(" ");
                     }
 
-                task = new ToDoTask(sb.toString().strip());
+                    if (!sb.toString().isEmpty()) {
+                        task = new ToDoTask(sb.toString().strip());
+                    } else {
+                        output("Task description cannot be empty.");
+                    }
             } else if (words[0].equals("deadline")) {
                 // find date or time
                 boolean isDate = false;
@@ -114,8 +116,17 @@ public class Miro {
                     }
                 }
 
-                task = new DeadlineTask(sb.toString().strip(), dateSb.toString().strip());
+                // check if date is specified
+                if (isDate && !sb.toString().isEmpty()) {
+                    task = new DeadlineTask(sb.toString().strip(), dateSb.toString().strip());
+                } else if (!isDate) {
+                    output("Please specify a date using \"/by ...\"");
+                } else {
+                    output("Task description cannot be empty.");
+                }
             } else if (words[0].equals("event")) {
+                boolean hasFrom = false;
+                boolean hasTo = false;
                 boolean isFrom = false;
                 boolean isTo = false;
 
@@ -138,32 +149,51 @@ public class Miro {
                     }
 
                     if (words[i].equals("/from")) {
+                        hasFrom = true;
                         isFrom = true;
                     } else if (words[i].equals("/to")) {
+                        hasTo = true;
                         isFrom = false;
                         isTo = true;
                     }
                 }
 
-                task = new EventTask(sb.toString().strip(), fromSb.toString().strip(), toSb.toString().strip());
+                if (hasFrom && hasTo) {
+                    task = new EventTask(sb.toString().strip(), fromSb.toString().strip(), toSb.toString().strip());
+                } else {
+                    output("Please specify dates using \"/from ... /to ...\"");
+                }
+            } else {
+                invalidMsg();
             }
-        } else {
-            for (String word : words) {
-                sb.append(word);
-            }
-            task = new Task(sb.toString());
-        }
 
-        this.taskList.add(task);
+
+        if (task != null) {
+            this.taskList.add(task);
+            Hbar();
+            space();
+            System.out.println("Got it. I've added this task:");
+            space();
+            System.out.printf("%s\n", task);
+            space();
+            System.out.printf("Now you have %d tasks in the list.\n", taskList.size());
+            Hbar();
+        }
+    }
+
+    private void output(String message) {
         Hbar();
         space();
-        System.out.println("Got it. I've added this task:");
-        space();
-        System.out.printf("%s\n", task);
-        space();
-        System.out.printf("Now you have %d tasks in the list.\n", taskList.size());
+        System.out.println(message);
         Hbar();
     }
+    private void invalidMsg() {
+        Hbar();
+        space();
+        System.out.println("Oops! This is an invalid task.");
+        Hbar();
+    }
+
     private void getTasks() {
         space();
         System.out.println("Here are the list of tasks:");
