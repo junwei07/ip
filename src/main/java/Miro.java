@@ -54,6 +54,15 @@ public class Miro {
                 }
             } else if (words[0].equals("todo")) {
                 addTask(words);
+            } else if (words[0].equals("delete")) {
+                if (words.length == 2) {
+                    try {
+                        int taskNum  = Integer.parseInt(words[1]);
+                        deleteTask(taskNum - 1);
+                    } catch (NumberFormatException e) {
+                        output("Invalid command!");
+                    }
+                }
             } else if (input.equals("bye")) {
                 break;
             } else {
@@ -181,6 +190,21 @@ public class Miro {
         }
     }
 
+    private void deleteTask(int index) {
+        if (index >= 0 && index < taskList.size()) {
+
+            Task task = taskList.get(index);
+            taskList.remove(index);
+            Hbar();
+            space();
+            System.out.println("Noted. I've removed this task from the list:");
+            space();
+            System.out.println(task);
+            Hbar();
+        } else {
+            output("Invalid command!");
+        }
+    }
     private void output(String message) {
         Hbar();
         space();
