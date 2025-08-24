@@ -5,6 +5,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import java.time.LocalDate;
+
 import java.util.ArrayList;
 
 public class Storage {
@@ -39,10 +41,11 @@ public class Storage {
                     task = new ToDoTask(splitInput[2]);
                     break;
                 case "D":
-                    task = new DeadlineTask(splitInput[2], splitInput[3]);
+                    task = new DeadlineTask(splitInput[2], formatDate(splitInput[3]));
                     break;
                 case "E":
-                    task = new EventTask(splitInput[2], splitInput[3], splitInput[4]);
+                    String[] dates = splitInput[3].split(" to ");
+                    task = new EventTask(splitInput[2], formatDate(dates[0]), formatDate(dates[1]));
                     break;
                 default:
                     throw new IllegalArgumentException("Error loading tasks.");
@@ -83,5 +86,9 @@ public class Storage {
         } catch (IOException e) {
             System.out.println("An IOException occurred. " + e);
         }
+    }
+
+    public LocalDate formatDate(String date) {
+        return LocalDate.parse(date);
     }
 }

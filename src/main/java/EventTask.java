@@ -1,20 +1,27 @@
-public class EventTask extends Task {
-    private final String toDate;
-    private String fromDate;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
-    public EventTask(String description, String fromDate, String toDate) {
+public class EventTask extends Task {
+    private final LocalDate toDate;
+    private final LocalDate fromDate;
+
+    public EventTask(String description, LocalDate fromDate, LocalDate toDate) {
         super(description);
         this.fromDate = fromDate;
         this.toDate = toDate;
     }
 
+    private String formatDate(LocalDate date) {
+        return date.format(DateTimeFormatter.ofPattern("MMM d yyyy"));
+    }
+
     @Override
     public String toString() {
-        return "[E] " + super.toString() + " (from: " + this.fromDate + " to: " + this.toDate + ")";
+        return "[E] " + super.toString() + " (from: " + formatDate(fromDate) + " to: " + formatDate(toDate) + ")";
     }
 
     @Override
     public String getOutputFormat() {
-        return "E | " + super.getOutputFormat() + " | " + fromDate + "-" + toDate;
+        return "E | " + super.getOutputFormat() + " | " + fromDate + " to " + toDate;
     }
 }
