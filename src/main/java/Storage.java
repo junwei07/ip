@@ -17,9 +17,9 @@ public class Storage {
     }
 
     /**
-     * Loads tasks from the user's hard drive.
+     * Loads tasks from the hard drive.
      *
-     * @return The list of tasks currently stored in the user's hard drive.
+     * @return The list of tasks currently stored in the hard drive.
      */
     public ArrayList<Task> load() throws IllegalArgumentException {
         ArrayList<Task> tasks = new ArrayList<>();
@@ -67,7 +67,7 @@ public class Storage {
 
 
     /**
-     * Saves the given list to the user's hard drive.
+     * Saves the given list to the hard drive.
      *
      * @param taskList The given list to be saved.
      */
