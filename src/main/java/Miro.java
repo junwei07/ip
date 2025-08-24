@@ -7,7 +7,7 @@ import java.time.LocalDate;
 public class Miro {
     private boolean isExit;
     private final Scanner sc = new Scanner(System.in);
-    private ArrayList<Task> taskList;
+    private TaskList taskList;
     private final Ui ui;
     private final Parser parser;
 
@@ -18,9 +18,10 @@ public class Miro {
         Storage storage = new Storage(filepath);
 
         try {
-            this.taskList = storage.load();
+            this.taskList = new TaskList(storage.load());
         } catch (IllegalArgumentException e) {
-            ui.output("Invalid task type.");
+            this.taskList = new TaskList();
+            ui.output("Invalid task type found.");
         }
 
         this.parser = new Parser(taskList, ui, storage);
