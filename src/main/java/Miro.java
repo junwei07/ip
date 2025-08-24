@@ -1,8 +1,6 @@
-
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+
 import java.util.Scanner;
 import java.time.LocalDate;
 
@@ -12,8 +10,10 @@ public class Miro {
     private ArrayList<Task> taskList;
     private Storage storage;
     private final String filepath = "./data/duke.txt";
+    private Ui ui;
 
     public Miro() {
+        this.ui = new Ui();
         this.isRunning = true;
 
         this.storage = new Storage(filepath);
@@ -26,18 +26,13 @@ public class Miro {
 
     }
 
-    private void Hbar() {
-        space();
-        System.out.println("───────────────────────────────");
-    }
     private void run() {
-        Hbar();
-        greet();
+        ui.greet();
         while (isRunning) {
             String input = sc.nextLine().strip().toLowerCase();
             String[] words = input.split(" ");
             if (input.equals("list")) {
-                getTasks();
+                ui.printTaskList(taskList);
             } else if (words[0].equals("mark") || words[0].equals("unmark")) {
                 if (words.length == 2) {
                     try {
@@ -51,15 +46,11 @@ public class Miro {
                                 unmarkTask(task);
                             }
                         } else {
-                            space();
-                            System.out.println("Invalid command!");
-                            Hbar();
+                            ui.output("Invalid command!");
                         }
                     } catch (NumberFormatException e) {
                         if (words[0].equals("mark") || words[0].equals("unmark")) {
-                            space();
-                            System.out.println("Invalid command!");
-                            Hbar();
+                            ui.output("Invalid command!");
                         } else {
                             addTask(words);
                         }
@@ -73,7 +64,7 @@ public class Miro {
                         int taskNum  = Integer.parseInt(words[1]);
                         deleteTask(taskNum - 1);
                     } catch (NumberFormatException e) {
-                        output("Invalid command!");
+                        ui.output("Invalid command!");
                     }
                 }
             } else if (input.equals("bye")) {
@@ -85,20 +76,10 @@ public class Miro {
         exit();
     }
 
-    private void space() {
-        System.out.print("    ");
-    }
 
-    private void greet() {
-        space();
-        System.out.println("Hello! I'm Miro.");
-        space();
-        System.out.println("What can I do for you?");
-        Hbar();
-    };
 
     private void exit() {
-        output("GoodBye. Hope to See you again!");
+        ui.output("GoodBye. Hope to See you again!");
     }
 
     private void addTask(String[] words) {
@@ -116,7 +97,7 @@ public class Miro {
                     if (!sb.toString().isEmpty()) {
                         task = new ToDoTask(sb.toString().strip());
                     } else {
-                        output("Task description cannot be empty.");
+                        ui.output("Task description cannot be empty.");
                     }
             } else if (words[0].equals("deadline")) {
                 // find date or time
@@ -144,9 +125,9 @@ public class Miro {
                         task = new DeadlineTask(sb.toString().strip(), LocalDate.parse(inputDate));
                     }
                 } else if (!isDate) {
-                    output("Please specify a date using \"/by ...\"");
+                    ui.output("Please specify a date using \"/by ...\"");
                 } else {
-                    output("Task description cannot be empty.");
+                    ui.output("Task description cannot be empty.");
                 }
             } else if (words[0].equals("event")) {
                 boolean hasFrom = false;
@@ -189,26 +170,19 @@ public class Miro {
                     if (isValidDate(inputFromDate) && isValidDate(inputToDate)) {
                         task = new EventTask(sb.toString().strip(), LocalDate.parse(inputFromDate), LocalDate.parse(inputToDate));
                     } else {
-                        output("Invalid date. Date should be in format 'YYYY-MM-DD'");
+                        ui.output("Invalid date. Date should be in format 'YYYY-MM-DD'");
                     }
                 } else {
-                    output("Please specify dates using \"/from ... /to ...\"");
+                    ui.output("Please specify dates using \"/from ... /to ...\"");
                 }
             } else {
-                invalidMsg();
+                ui.output("Oops! This is an invalid task.");
             }
 
 
         if (task != null) {
             this.taskList.add(task);
-            Hbar();
-            space();
-            System.out.println("Got it. I've added this task:");
-            space();
-            System.out.printf("%s\n", task);
-            space();
-            System.out.printf("Now you have %d tasks in the list.\n", taskList.size());
-            Hbar();
+            ui.addTaskSuccess(task, taskList.size());
         }
         storage.save(taskList);
     }
@@ -218,62 +192,23 @@ public class Miro {
 
             Task task = taskList.get(index);
             taskList.remove(index);
-            Hbar();
-            space();
-            System.out.println("Noted. I've removed this task from the list:");
-            space();
-            System.out.println(task);
-            Hbar();
+            ui.deleteTaskSuccess(task);
         } else {
-            output("Invalid command!");
+            ui.output("Invalid command!");
         }
 
         storage.save(taskList);
     }
-    private void output(String message) {
-        Hbar();
-        space();
-        System.out.println(message);
-        Hbar();
-    }
-    private void invalidMsg() {
-        Hbar();
-        space();
-        System.out.println("Oops! This is an invalid task.");
-        Hbar();
-    }
 
-    private void getTasks() {
-        space();
-        System.out.println("Here are the list of tasks:");
-        for (int i = 0; i < taskList.size(); i++) {
-
-            space();
-            System.out.printf("%d. %s\n", i + 1, taskList.get(i).toString());
-        }
-        Hbar();
-    }
     private void markTask(Task task) {
         task.mark();
-        Hbar();
-        space();
-        System.out.println("Good job! I've marked this task as done");
-        space();
-        System.out.println(task);
-        Hbar();
-
+        ui.markTask(task);
         storage.save(taskList);
     }
 
     private void unmarkTask(Task task) {
         task.unmark();
-        Hbar();
-        space();
-        System.out.println("Ok, I've unmarked this task");
-        space();
-        System.out.println(task);
-        Hbar();
-
+        ui.unmarkTask(task);
         storage.save(taskList);
     }
 
@@ -283,10 +218,10 @@ public class Miro {
             if (!inputDate.isBefore(LocalDate.now())) {
                 return true;
             } else {
-                output("Date cannot be in the past.");
+                ui.output("Date cannot be in the past.");
             }
         } catch (DateTimeParseException e) {
-            output("Invalid date. Date must be in format 'YYYY-MM-DD'.");
+            ui.output("Invalid date. Date must be in format 'YYYY-MM-DD'.");
         }
 
         return false;
