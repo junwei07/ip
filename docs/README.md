@@ -1,4 +1,4 @@
-# Miro User Guide
+# miro.main.Miro User Guide
 
 // Update the title above to match the actual product name
 

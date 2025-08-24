@@ -1,3 +1,7 @@
+package miro.main;
+
+import miro.task.Task;
+
 import java.util.ArrayList;
 
 public class Ui {
@@ -26,7 +30,7 @@ public class Ui {
     }
 
     public void greet() {
-        append("Hello! I'm Miro.");
+        append("Hello! I'm miro.main.Miro.");
         append("What can I do for you?");
 
         outputMessage();

@@ -1,3 +1,10 @@
+package miro.main;
+
+import miro.task.DeadlineTask;
+import miro.task.EventTask;
+import miro.task.Task;
+import miro.task.ToDoTask;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;

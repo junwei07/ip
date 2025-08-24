@@ -1,3 +1,10 @@
+package miro.main;
+
+import miro.task.DeadlineTask;
+import miro.task.EventTask;
+import miro.task.Task;
+import miro.task.ToDoTask;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
@@ -78,7 +85,7 @@ public class Parser {
                 if (!sb.toString().isEmpty()) {
                     task = new ToDoTask(sb.toString().strip());
                 } else {
-                    ui.output("Task description cannot be empty.");
+                    ui.output("miro.task.Task description cannot be empty.");
                 }
             }
             case "deadline" -> {
@@ -109,7 +116,7 @@ public class Parser {
                 } else if (!isDate) {
                     ui.output("Please specify a date using \"/by ...\"");
                 } else {
-                    ui.output("Task description cannot be empty.");
+                    ui.output("miro.task.Task description cannot be empty.");
                 }
             }
             case "event" -> {

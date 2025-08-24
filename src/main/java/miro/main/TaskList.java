@@ -1,3 +1,7 @@
+package miro.main;
+
+import miro.task.Task;
+
 import java.util.ArrayList;
 
 public class TaskList {

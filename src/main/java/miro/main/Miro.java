@@ -1,8 +1,6 @@
-import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
+package miro.main;
 
 import java.util.Scanner;
-import java.time.LocalDate;
 
 public class Miro {
     private boolean isExit;
