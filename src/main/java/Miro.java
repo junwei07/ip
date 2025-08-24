@@ -1,7 +1,10 @@
 
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Scanner;
+import java.time.LocalDate;
 
 public class Miro {
     private boolean isRunning;
@@ -95,7 +98,6 @@ public class Miro {
     };
 
     private void exit() {
-        storage.save(taskList);
         output("GoodBye. Hope to See you again!");
     }
 
@@ -133,10 +135,14 @@ public class Miro {
                         }
                     }
                 }
+                String inputDate = dateSb.toString().strip();
 
                 // check if date is specified
-                if (isDate && !sb.toString().isEmpty()) {
-                    task = new DeadlineTask(sb.toString().strip(), dateSb.toString().strip());
+                if (isDate && !inputDate.isEmpty()) {
+                    // check valid date and time
+                    if (isValidDate(inputDate)) {
+                        task = new DeadlineTask(sb.toString().strip(), LocalDate.parse(inputDate));
+                    }
                 } else if (!isDate) {
                     output("Please specify a date using \"/by ...\"");
                 } else {
@@ -175,9 +181,16 @@ public class Miro {
                         isTo = true;
                     }
                 }
+                String inputFromDate = fromSb.toString().strip();
+                String inputToDate = toSb.toString().strip();
 
+                // check if date is valid
                 if (hasFrom && hasTo) {
-                    task = new EventTask(sb.toString().strip(), fromSb.toString().strip(), toSb.toString().strip());
+                    if (isValidDate(inputFromDate) && isValidDate(inputToDate)) {
+                        task = new EventTask(sb.toString().strip(), LocalDate.parse(inputFromDate), LocalDate.parse(inputToDate));
+                    } else {
+                        output("Invalid date. Date should be in format 'YYYY-MM-DD'");
+                    }
                 } else {
                     output("Please specify dates using \"/from ... /to ...\"");
                 }
@@ -197,6 +210,7 @@ public class Miro {
             System.out.printf("Now you have %d tasks in the list.\n", taskList.size());
             Hbar();
         }
+        storage.save(taskList);
     }
 
     private void deleteTask(int index) {
@@ -213,6 +227,8 @@ public class Miro {
         } else {
             output("Invalid command!");
         }
+
+        storage.save(taskList);
     }
     private void output(String message) {
         Hbar();
@@ -245,6 +261,8 @@ public class Miro {
         space();
         System.out.println(task);
         Hbar();
+
+        storage.save(taskList);
     }
 
     private void unmarkTask(Task task) {
@@ -255,7 +273,25 @@ public class Miro {
         space();
         System.out.println(task);
         Hbar();
+
+        storage.save(taskList);
     }
+
+    private boolean isValidDate(String input) {
+        try {
+            LocalDate inputDate = LocalDate.parse(input);
+            if (!inputDate.isBefore(LocalDate.now())) {
+                return true;
+            } else {
+                output("Date cannot be in the past.");
+            }
+        } catch (DateTimeParseException e) {
+            output("Invalid date. Date must be in format 'YYYY-MM-DD'.");
+        }
+
+        return false;
+    }
+
     public static void main(String[] args) {
         new Miro().run();
     }
