@@ -15,6 +15,11 @@ public class Miro {
 
         this.storage = new Storage(filepath);
 
+        try {
+            this.taskList = storage.load();
+        } catch (IllegalArgumentException e) {
+            System.out.println("Invalid task type.");
+        }
 
     }
 
