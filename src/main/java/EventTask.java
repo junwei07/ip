@@ -12,4 +12,9 @@ public class EventTask extends Task {
     public String toString() {
         return "[E] " + super.toString() + " (from: " + this.fromDate + " to: " + this.toDate + ")";
     }
+
+    @Override
+    public String getOutputFormat() {
+        return "E | " + super.getOutputFormat() + " | " + fromDate + "-" + toDate;
+    }
 }
