@@ -1,4 +1,3 @@
-import com.sun.source.util.TaskEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,10 +6,21 @@ import java.util.Scanner;
 public class Miro {
     private boolean isRunning;
     private Scanner sc = new Scanner(System.in);
-    private List<Task> taskList = new ArrayList<>();
+    private ArrayList<Task> taskList;
+    private Storage storage;
+    private final String filepath = "./data/duke.txt";
 
     public Miro() {
         this.isRunning = true;
+
+        this.storage = new Storage(filepath);
+
+        try {
+            this.taskList = storage.load();
+        } catch (IllegalArgumentException e) {
+            System.out.println("Invalid task type.");
+        }
+
     }
 
     private void Hbar() {
@@ -85,9 +95,8 @@ public class Miro {
     };
 
     private void exit() {
-        space();
-        System.out.println("GoodBye. Hope to See you again!");
-        Hbar();
+        storage.save(taskList);
+        output("GoodBye. Hope to See you again!");
     }
 
     private void addTask(String[] words) {
