@@ -30,7 +30,7 @@ public class Ui {
     }
 
     public void greet() {
-        append("Hello! I'm miro.main.Miro.");
+        append("Hello! I'm Miro.");
         append("What can I do for you?");
 
         outputMessage();
