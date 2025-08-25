@@ -7,6 +7,7 @@ import miro.task.ToDoTask;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 
 /**
  * Represents a parser to parse user input.
@@ -61,7 +62,13 @@ public class Parser {
                     }
                 }
             }
-            case "todo" -> addTask(words);
+            case "find" -> {
+                if (words.length == 2) {
+                    searchTask(words[1]);
+                } else {
+                    ui.output("Please input one keyword to search.");
+                }
+            }
             case "delete" -> {
                 if (words.length == 2) {
                     try {
@@ -76,7 +83,7 @@ public class Parser {
                 exit();
                 return true;
             }
-            default -> ui.output("Sorry! I don't recognise this command.");
+            default -> addTask(words);
         }
         return false;
     }
@@ -100,7 +107,7 @@ public class Parser {
                 if (!sb.toString().isEmpty()) {
                     task = new ToDoTask(sb.toString().strip());
                 } else {
-                    ui.output("miro.task.Task description cannot be empty.");
+                    ui.output("Task description cannot be empty.");
                 }
             }
             case "deadline" -> {
@@ -131,7 +138,7 @@ public class Parser {
                 } else if (!isDate) {
                     ui.output("Please specify a date using \"/by ...\"");
                 } else {
-                    ui.output("miro.task.Task description cannot be empty.");
+                    ui.output("Task description cannot be empty.");
                 }
             }
             case "event" -> {
@@ -203,6 +210,17 @@ public class Parser {
         }
 
         storage.save(taskList.getTaskList());
+    }
+
+    private void searchTask(String keyword) {
+        ArrayList<Task> filteredTasks = new ArrayList<>();
+        for (Task task : taskList.getTaskList()) {
+            if (task.getDescription().contains(keyword)) {
+                filteredTasks.add(task);
+            }
+        }
+
+        ui.searchedTasks(filteredTasks);
     }
 
     private void markTask(Task task) {
