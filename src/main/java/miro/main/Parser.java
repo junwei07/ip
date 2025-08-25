@@ -8,6 +8,13 @@ import miro.task.ToDoTask;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
+/**
+ * Represents a parser to parse user input.
+ * A <code>taskList</code> object corresponds to a list of tasks.
+ * A <code>Ui</code> object corresponds to the UI of the app.
+ * A <code>Storage</code> object corresponds the storage to load/ save the
+ * task list.
+ */
 public class Parser {
     private final TaskList taskList;
     private final Ui ui;

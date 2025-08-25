@@ -4,6 +4,11 @@ import miro.task.Task;
 
 import java.util.ArrayList;
 
+/**
+ * Represents a UI of the app.
+ * The <code>output</code> field is of type <code>StringBuilder</code> which
+ * receives the message to be printed on screen.
+ */
 public class Ui {
     StringBuilder output;
 

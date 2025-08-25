@@ -1,5 +1,10 @@
 package miro.task;
 
+/**
+ * Represents a task.
+ * The <code>description</code> field stores the description of the task.
+ * The <code>isDone</code> field indicates if the task has been marked as done.
+ */
 public class Task {
     private final String description;
     private boolean isDone;
