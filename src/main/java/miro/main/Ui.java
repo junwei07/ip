@@ -4,6 +4,11 @@ import miro.task.Task;
 
 import java.util.ArrayList;
 
+/**
+ * Represents a UI of the app.
+ * The <code>output</code> field is of type <code>StringBuilder</code> which
+ * receives the message to be printed on screen.
+ */
 public class Ui {
     StringBuilder output;
 
@@ -29,6 +34,10 @@ public class Ui {
         output.setLength(0);
     }
 
+    /**
+     * Prints greeting message when chatbot is launched.
+     *
+     */
     public void greet() {
         append("Hello! I'm Miro.");
         append("What can I do for you?");
@@ -37,6 +46,11 @@ public class Ui {
         reset();
     };
 
+    /**
+     * Prints message on screen.
+     *
+     * @param message The message to output.
+     */
     public void output(String message) {
         append(message);
 
@@ -44,13 +58,21 @@ public class Ui {
         reset();
     }
 
-    // main output message
+    /**
+     * Prints the output message from string builder on screen.
+     *
+     */
     public void outputMessage() {
         Hbar();
         System.out.print(output.toString());
         Hbar();
     }
 
+    /**
+     * Prints the task list.
+     *
+     * @param taskList The task list to output.
+     */
     public void printTaskList(ArrayList<Task> taskList) {
         append("Here are the list of tasks:");
 
@@ -64,6 +86,12 @@ public class Ui {
         reset();
     }
 
+    /**
+     * Prints message when task is added to task list.
+     *
+     * @param task The task being added to the task list.
+     * @param taskCount The number of tasks in the task list.
+     */
     public void addTaskSuccess(Task task, int taskCount) {
         append("Got it. I've added this task:");
         append(task.toString());
@@ -73,6 +101,11 @@ public class Ui {
         reset();
     }
 
+    /**
+     * Prints message when task is deleted from task list.
+     *
+     * @param task The task being deleted from the task list.
+     */
     public void deleteTaskSuccess(Task task) {
         append("Noted. I've removed this task from the list:");
         append(task.toString());
@@ -81,6 +114,11 @@ public class Ui {
         reset();
     }
 
+    /**
+     * Prints message when task is marked as done.
+     *
+     * @param task The marked task.
+     */
     public void markTask(Task task) {
         append("Good job! I've marked this task as done");
         append(task.toString());
@@ -88,6 +126,12 @@ public class Ui {
         outputMessage();
         reset();
     }
+
+    /**
+     * Prints message when task is marked as not done.
+     *
+     * @param task The unmarked task.
+     */
     public void unmarkTask(Task task) {
         append("Ok, I've unmarked this task");
         append(task.toString());
