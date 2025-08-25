@@ -19,6 +19,14 @@ public class Parser {
         this.storage = storage;
     }
 
+    /**
+     * Parses the array of words from user input and carries out
+     * the corresponding tasks.
+     *
+     * @param words The array of words from user input.
+     *
+     * @return A boolean value to indicate whether to exit the program.
+     */
     public boolean parse(String[] words) {
         switch (words[0]) {
             case "list" -> ui.printTaskList(taskList.getTaskList());

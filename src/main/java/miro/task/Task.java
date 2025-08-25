@@ -26,6 +26,12 @@ public class Task {
         return box + " " + description;
     }
 
+    /**
+     * Returns a string that details the type, state (marked/ unmarked) and
+     * description of a task.
+     *
+     * @return The task information to be stored local file.
+     */
     public String getOutputFormat() {
         int marked = isDone ? 1 : 0;
         return marked + " | " + description;
