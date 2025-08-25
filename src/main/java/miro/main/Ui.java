@@ -96,4 +96,18 @@ public class Ui {
         reset();
     }
 
+    public void searchedTasks(ArrayList<Task> tasklist) {
+        if (!tasklist.isEmpty()) {
+            append("Here are the matching tasks in your list:");
+            for (Task task : tasklist) {
+                append(task.toString());
+            }
+        } else {
+            append("Oops! No such task found.");
+        }
+
+        outputMessage();
+        reset();
+    }
+
 }
