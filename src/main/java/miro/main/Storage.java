@@ -17,7 +17,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class Storage {
-    private String filePath;
+    private final String filePath;
 
     Storage(String filePath) {
         this.filePath = filePath;
