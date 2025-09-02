@@ -8,6 +8,7 @@ public class Miro {
     private TaskList taskList;
     private final Ui ui;
     private final Parser parser;
+    private String miroResponse;
 
     public Miro() {
         this.ui = new Ui();
@@ -26,16 +27,28 @@ public class Miro {
 
     }
 
-    private void run() {
-        ui.greet();
-        while (!isExit) {
-            String input = sc.nextLine().strip().toLowerCase();
+    private void run(String input) {
+//        miroResponse = ui.greet();
+//        while (!isExit) {
+//            String input = sc.nextLine().strip().toLowerCase();
             String[] words = input.split(" ");
-            isExit = parser.parse(words);
-        }
+            miroResponse = parser.parse(words);
+//        }
     }
 
-    public static void main(String[] args) {
-        new Miro().run();
+    public String greet() {
+        return ui.greet();
+    }
+
+//    public static void main(String[] args) {
+//        new Miro().run();
+//    }
+
+    /**
+     * Generates a response for the user's chat message.
+     */
+    public String getResponse(String input) {
+        run(input);
+        return miroResponse;
     }
 }

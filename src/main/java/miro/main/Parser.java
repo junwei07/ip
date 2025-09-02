@@ -35,9 +35,11 @@ public class Parser {
      *
      * @return A boolean value to indicate whether to exit the program.
      */
-    public boolean parse(String[] words) {
+    public String parse(String[] words) {
         switch (words[0]) {
-            case "list" -> ui.printTaskList(taskList.getTaskList());
+            case "list" -> {
+                return ui.printTaskList(taskList.getTaskList());
+            }
             case "mark", "unmark" -> {
                 if (words.length == 2) {
                     try {
@@ -46,53 +48,50 @@ public class Parser {
                         if (taskNum > 0 && taskNum <= taskList.size()) {
                             Task task = taskList.get(taskNum - 1);
                             if (words[0].equals("mark")) {
-                                markTask(task);
+                                return markTask(task);
                             } else {
-                                unmarkTask(task);
+                                return unmarkTask(task);
                             }
                         } else {
-                            ui.output("Invalid command!");
+                            return ui.output("Invalid command!");
                         }
                     } catch (NumberFormatException e) {
                         if (words[0].equals("mark") || words[0].equals("unmark")) {
-                            ui.output("Invalid command!");
+                            return ui.output("Invalid command!");
                         } else {
-                            addTask(words);
+                            return addTask(words);
                         }
                     }
                 }
             }
             case "find" -> {
                 if (words.length == 2) {
-                    searchTask(words[1]);
+                    return searchTask(words[1]);
                 } else {
-                    ui.output("Please input one keyword to search.");
+                    return ui.output("Please input one keyword to search.");
                 }
             }
             case "delete" -> {
                 if (words.length == 2) {
                     try {
                         int taskNum = Integer.parseInt(words[1]);
-                        deleteTask(taskNum - 1);
+                        return deleteTask(taskNum - 1);
                     } catch (NumberFormatException e) {
-                        ui.output("Invalid command!");
+                        return ui.output("Invalid command!");
                     }
                 }
             }
             case "bye" -> {
-                exit();
-                return true;
+                return ui.output("GoodBye. Hope to See you again!");
             }
-            default -> addTask(words);
+            default -> {
+                return addTask(words);
+            }
         }
-        return false;
+        return ui.output("Please input something!");
     }
 
-    private void exit() {
-        ui.output("GoodBye. Hope to See you again!");
-    }
-
-    private void addTask(String[] words) {
+    private String addTask(String[] words) {
         Task task = null;
         StringBuilder sb = new StringBuilder();
 
@@ -107,7 +106,7 @@ public class Parser {
                 if (!sb.toString().isEmpty()) {
                     task = new ToDoTask(sb.toString().strip());
                 } else {
-                    ui.output("Task description cannot be empty.");
+                    return ui.output("Task description cannot be empty.");
                 }
             }
             case "deadline" -> {
@@ -136,9 +135,9 @@ public class Parser {
                         task = new DeadlineTask(sb.toString().strip(), LocalDate.parse(inputDate));
                     }
                 } else if (!isDate) {
-                    ui.output("Please specify a date using \"/by ...\"");
+                    return ui.output("Please specify a date using \"/by ...\"");
                 } else {
-                    ui.output("Task description cannot be empty.");
+                    return ui.output("Task description cannot be empty.");
                 }
             }
             case "event" -> {
@@ -182,37 +181,42 @@ public class Parser {
                     if (isValidDate(inputFromDate) && isValidDate(inputToDate)) {
                         task = new EventTask(sb.toString().strip(), LocalDate.parse(inputFromDate), LocalDate.parse(inputToDate));
                     } else {
-                        ui.output("Invalid date. Date should be in format 'YYYY-MM-DD'");
+                        return ui.output("Invalid date. Date should be in format 'YYYY-MM-DD'");
                     }
                 } else {
-                    ui.output("Please specify dates using \"/from ... /to ...\"");
+                    return ui.output("Please specify dates using \"/from ... /to ...\"");
                 }
             }
-            default -> ui.output("Oops! This is an invalid task.");
+            default -> {
+                return ui.output("Oops! This is an invalid task.");
+            }
         }
 
 
         if (task != null) {
             taskList.add(task);
-            ui.addTaskSuccess(task, taskList.size());
+            storage.save(taskList.getTaskList());
+
+            return ui.addTaskSuccess(task, taskList.size());
         }
-        storage.save(taskList.getTaskList());
+        return ui.output("No task to be added.");
     }
 
-    private void deleteTask(int index) {
+    private String deleteTask(int index) {
         if (index >= 0 && index < taskList.size()) {
 
             Task task = taskList.get(index);
             taskList.delete(index);
-            ui.deleteTaskSuccess(task);
+            storage.save(taskList.getTaskList());
+            return ui.deleteTaskSuccess(task);
         } else {
-            ui.output("Invalid command!");
+            storage.save(taskList.getTaskList());
+            return ui.output("Invalid command!");
         }
 
-        storage.save(taskList.getTaskList());
     }
 
-    private void searchTask(String keyword) {
+    private String searchTask(String keyword) {
         ArrayList<Task> filteredTasks = new ArrayList<>();
         for (Task task : taskList.getTaskList()) {
             if (task.getDescription().contains(keyword)) {
@@ -220,19 +224,19 @@ public class Parser {
             }
         }
 
-        ui.searchedTasks(filteredTasks);
+        return ui.searchedTasks(filteredTasks);
     }
 
-    private void markTask(Task task) {
+    private String markTask(Task task) {
         task.mark();
-        ui.markTask(task);
         storage.save(taskList.getTaskList());
+        return ui.markTask(task);
     }
 
-    private void unmarkTask(Task task) {
+    private String unmarkTask(Task task) {
         task.unmark();
-        ui.unmarkTask(task);
         storage.save(taskList.getTaskList());
+        return ui.unmarkTask(task);
     }
 
     private boolean isValidDate(String input) {
