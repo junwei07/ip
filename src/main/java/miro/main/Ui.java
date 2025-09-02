@@ -38,12 +38,13 @@ public class Ui {
      * Prints greeting message when chatbot is launched.
      *
      */
-    public void greet() {
+    public String greet() {
         append("Hello! I'm Miro.");
         append("What can I do for you?");
 
-        outputMessage();
-        reset();
+        return output.toString();
+//        outputMessage();
+//        reset();
     };
 
     /**
@@ -51,21 +52,23 @@ public class Ui {
      *
      * @param message The message to output.
      */
-    public void output(String message) {
+    public String output(String message) {
         append(message);
 
-        outputMessage();
-        reset();
+        return outputMessage();
+//        reset();
     }
 
     /**
      * Prints the output message from string builder on screen.
      *
      */
-    public void outputMessage() {
-        Hbar();
-        System.out.print(output.toString());
-        Hbar();
+    public String outputMessage() {
+//        Hbar();
+        String finalOuput = output.toString();
+        reset();
+        return finalOuput;
+//        Hbar();
     }
 
     /**
@@ -73,7 +76,7 @@ public class Ui {
      *
      * @param taskList The task list to output.
      */
-    public void printTaskList(ArrayList<Task> taskList) {
+    public String printTaskList(ArrayList<Task> taskList) {
         append("Here are the list of tasks:");
 
         for (int i = 0; i < taskList.size(); i++) {
@@ -82,8 +85,8 @@ public class Ui {
             append(str);
         }
 
-        outputMessage();
-        reset();
+        return outputMessage();
+//        reset();
     }
 
     /**
@@ -92,13 +95,12 @@ public class Ui {
      * @param task The task being added to the task list.
      * @param taskCount The number of tasks in the task list.
      */
-    public void addTaskSuccess(Task task, int taskCount) {
+    public String addTaskSuccess(Task task, int taskCount) {
         append("Got it. I've added this task:");
         append(task.toString());
         append(String.format("Now you have %d tasks in the list.", taskCount));
 
-        outputMessage();
-        reset();
+        return outputMessage();
     }
 
     /**
@@ -106,12 +108,11 @@ public class Ui {
      *
      * @param task The task being deleted from the task list.
      */
-    public void deleteTaskSuccess(Task task) {
+    public String deleteTaskSuccess(Task task) {
         append("Noted. I've removed this task from the list:");
         append(task.toString());
 
-        outputMessage();
-        reset();
+        return outputMessage();
     }
 
     /**
@@ -119,12 +120,11 @@ public class Ui {
      *
      * @param task The marked task.
      */
-    public void markTask(Task task) {
+    public String markTask(Task task) {
         append("Good job! I've marked this task as done");
         append(task.toString());
 
-        outputMessage();
-        reset();
+       return outputMessage();
     }
 
     /**
@@ -132,15 +132,14 @@ public class Ui {
      *
      * @param task The unmarked task.
      */
-    public void unmarkTask(Task task) {
+    public String unmarkTask(Task task) {
         append("Ok, I've unmarked this task");
         append(task.toString());
 
-        outputMessage();
-        reset();
+        return outputMessage();
     }
 
-    public void searchedTasks(ArrayList<Task> tasklist) {
+    public String searchedTasks(ArrayList<Task> tasklist) {
         if (!tasklist.isEmpty()) {
             append("Here are the matching tasks in your list:");
             for (Task task : tasklist) {
@@ -150,8 +149,7 @@ public class Ui {
             append("Oops! No such task found.");
         }
 
-        outputMessage();
-        reset();
+        return outputMessage();
     }
 
 }
