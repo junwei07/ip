@@ -24,10 +24,10 @@ public class MainWindow extends AnchorPane {
     @FXML
     private Button sendButton;
 
-    private Miro duke;
+    private Miro miro;
 
-    private Image userImage = new Image(this.getClass().getResourceAsStream("/images/DaUser.png"));
-    private Image dukeImage = new Image(this.getClass().getResourceAsStream("/images/DaDuke.png"));
+    private Image userImage = new Image(this.getClass().getResourceAsStream("/images/User.png"));
+    private Image miroImage = new Image(this.getClass().getResourceAsStream("/images/Miro.jpg"));
 
     @FXML
     public void initialize() {
@@ -36,31 +36,31 @@ public class MainWindow extends AnchorPane {
 
     }
 
-    /** Injects the Duke instance */
-    public void setDuke(Miro d) {
-        duke = d;
+    /** Injects the Miro instance */
+    public void setMiro(Miro d) {
+        miro = d;
     }
 
-    /** Initial greeting message */
+    /** Creates a dialog gox that contains the Miro's initial greeting message */
     public void greetUser() {
         // initial greeting
-        String response = duke.greet();
+        String response = miro.greet();
         dialogContainer.getChildren().addAll(
-                DialogBox.getDukeDialog(response, dukeImage)
+                DialogBox.getMiroDialog(response, miroImage)
         );
     }
 
     /**
-     * Creates two dialog boxes, one echoing user input and the other containing Duke's reply and then appends them to
+     * Creates two dialog boxes, one echoing user input and the other containing Miro's reply and then appends them to
      * the dialog container. Clears the user input after processing.
      */
     @FXML
     private void handleUserInput() {
         String input = userInput.getText();
-        String response = duke.getResponse(input);
+        String response = miro.getResponse(input);
         dialogContainer.getChildren().addAll(
                 DialogBox.getUserDialog(input, userImage),
-                DialogBox.getDukeDialog(response, dukeImage)
+                DialogBox.getMiroDialog(response, miroImage)
         );
         userInput.clear();
     }

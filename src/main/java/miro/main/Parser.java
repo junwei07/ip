@@ -82,7 +82,7 @@ public class Parser {
                 }
             }
             case "bye" -> {
-                return ui.output("GoodBye. Hope to See you again!");
+                return ui.output("Goodbye. Hope to see you again!");
             }
             default -> {
                 return addTask(words);

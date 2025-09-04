@@ -20,12 +20,7 @@ public class Ui {
         return "    ";
     }
 
-    private void Hbar() {
-        System.out.println(space() + "───────────────────────────────");
-    }
-
     private void append(String str) {
-        output.append(space());
         output.append(str);
         output.append("\n");
     }
@@ -42,9 +37,7 @@ public class Ui {
         append("Hello! I'm Miro.");
         append("What can I do for you?");
 
-        return output.toString();
-//        outputMessage();
-//        reset();
+        return outputMessage();
     };
 
     /**
@@ -56,7 +49,6 @@ public class Ui {
         append(message);
 
         return outputMessage();
-//        reset();
     }
 
     /**
@@ -64,11 +56,9 @@ public class Ui {
      *
      */
     public String outputMessage() {
-//        Hbar();
-        String finalOuput = output.toString();
+        String finalOutput = output.toString();
         reset();
-        return finalOuput;
-//        Hbar();
+        return finalOutput;
     }
 
     /**
@@ -86,7 +76,6 @@ public class Ui {
         }
 
         return outputMessage();
-//        reset();
     }
 
     /**

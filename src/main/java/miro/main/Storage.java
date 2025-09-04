@@ -42,21 +42,15 @@ public class Storage {
             while ((line = br.readLine()) != null) {
                 String[] splitInput = line.split(" \\| ");
 
-                Task task;
-                switch (splitInput[0]) {
-                case "T":
-                    task = new ToDoTask(splitInput[2]);
-                    break;
-                case "D":
-                    task = new DeadlineTask(splitInput[2], formatDate(splitInput[3]));
-                    break;
-                case "E":
-                    String[] dates = splitInput[3].split(" to ");
-                    task = new EventTask(splitInput[2], formatDate(dates[0]), formatDate(dates[1]));
-                    break;
-                default:
-                    throw new IllegalArgumentException("Error loading tasks.");
-                }
+                Task task = switch (splitInput[0]) {
+                    case "T" -> new ToDoTask(splitInput[2]);
+                    case "D" -> new DeadlineTask(splitInput[2], formatDate(splitInput[3]));
+                    case "E" -> {
+                        String[] dates = splitInput[3].split(" to ");
+                        yield new EventTask(splitInput[2], formatDate(dates[0]), formatDate(dates[1]));
+                    }
+                    default -> throw new IllegalArgumentException("Error loading tasks.");
+                };
 
                 if (Integer.parseInt(splitInput[1]) == 1) {
                     task.mark();
