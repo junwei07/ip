@@ -16,10 +16,6 @@ public class Ui {
         this.output = new StringBuilder();
     }
 
-    private String space() {
-        return "    ";
-    }
-
     private void append(String str) {
         output.append(str);
         output.append("\n");

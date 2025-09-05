@@ -24,6 +24,9 @@ public class Main extends Application {
             AnchorPane ap = fxmlLoader.load();
             Scene scene = new Scene(ap);
             stage.setScene(scene);
+            stage.setMinHeight(220);
+            stage.setMinWidth(417);
+            stage.setMaxWidth(417);
             fxmlLoader.<MainWindow>getController().setMiro(miro);  // inject the Miro instance
             fxmlLoader.<MainWindow>getController().greetUser();
             stage.show();
