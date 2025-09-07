@@ -1,9 +1,8 @@
 package miro.main;
 
-import miro.task.Task;
-
-import java.util.ArrayList;
 import java.util.List;
+
+import miro.task.Task;
 
 /**
  * Represents a UI of the app.
@@ -11,7 +10,7 @@ import java.util.List;
  * receives the message to be printed on screen.
  */
 public class Ui {
-    StringBuilder output;
+    private StringBuilder output;
 
     public Ui() {
         this.output = new StringBuilder();
@@ -35,7 +34,7 @@ public class Ui {
         append("What can I do for you?");
 
         return outputMessage();
-    };
+    }
 
     /**
      * Prints message on screen.
@@ -63,7 +62,7 @@ public class Ui {
      *
      * @param taskList The task list to output.
      */
-    public String printTaskList(ArrayList<Task> taskList) {
+    public String printTaskList(List<Task> taskList) {
         append("Here are the list of tasks:");
 
         for (int i = 0; i < taskList.size(); i++) {
@@ -110,7 +109,7 @@ public class Ui {
         append("Good job! I've marked this task as done");
         append(task.toString());
 
-       return outputMessage();
+        return outputMessage();
     }
 
     /**
@@ -125,6 +124,13 @@ public class Ui {
         return outputMessage();
     }
 
+    /**
+     * Prints message when task is marked as not done.
+     *
+     * @param tasklist The task list.
+     *
+     * @return A string representation of the task list.
+     */
     public String searchedTasks(List<Task> tasklist) {
         if (!tasklist.isEmpty()) {
             append("Here are the matching tasks in your list:");

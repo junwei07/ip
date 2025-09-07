@@ -1,14 +1,23 @@
 package miro.main;
 
-import java.util.Scanner;
-
+/**
+ * Represents a Miro chatbot.
+ * A <code>taskList</code> object corresponds to a list of tasks.
+ * A <code>Ui</code> object corresponds to the UI of the app.
+ * A <code>Parser</code> object corresponds to the parser of user input.
+ * A <code>Storage</code> object corresponds the storage to load/ save the
+ * task list.
+ */
 public class Miro {
-    private final Scanner sc = new Scanner(System.in);
     private TaskList taskList;
     private final Ui ui;
     private final Parser parser;
     private String miroResponse;
 
+
+    /**
+     * Initializes a Miro chatbot instance.
+     */
     public Miro() {
         this.ui = new Ui();
         String filepath = "./data/duke.txt";
@@ -26,8 +35,8 @@ public class Miro {
     }
 
     private void run(String input) {
-            String[] words = input.split(" ");
-            miroResponse = parser.parse(words);
+        String[] words = input.split(" ");
+        miroResponse = parser.parse(words);
     }
 
     public String greet() {

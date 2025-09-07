@@ -7,7 +7,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-
 import miro.main.Miro;
 
 /**
@@ -27,7 +26,7 @@ public class Main extends Application {
             stage.setMinHeight(220);
             stage.setMinWidth(417);
             stage.setMaxWidth(417);
-            fxmlLoader.<MainWindow>getController().setMiro(miro);  // inject the Miro instance
+            fxmlLoader.<MainWindow>getController().setMiro(miro); // inject the Miro instance
             fxmlLoader.<MainWindow>getController().greetUser();
             stage.show();
         } catch (IOException e) {

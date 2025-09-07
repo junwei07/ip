@@ -10,6 +10,9 @@ import miro.task.DeadlineTask;
 import miro.task.Task;
 import miro.utils.Utils;
 
+/**
+ * Represents a command to add a deadline task.
+ */
 public class AddDeadlineCommand extends Command {
     private final String[] words;
 

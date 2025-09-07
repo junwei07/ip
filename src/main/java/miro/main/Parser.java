@@ -25,6 +25,14 @@ public class Parser {
     private final Ui ui;
     private final Storage storage;
 
+
+    /**
+     * Represents a parser to parse user input.
+     * A <code>taskList</code> object corresponds to a list of tasks.
+     * A <code>Ui</code> object corresponds to the UI of the app.
+     * A <code>Storage</code> object corresponds the storage to load/ save the
+     * task list.
+     */
     public Parser(TaskList taskList, Ui ui, Storage storage) {
         this.taskList = taskList;
         this.ui = ui;
@@ -38,7 +46,7 @@ public class Parser {
      * @param words The array of words from user input.
      *
      * @return A <code>String</code> that indicates the response of
-     * the chatbot.
+     *      the chatbot.
      */
     public String parse(String[] words) {
         Command command;
@@ -94,23 +102,26 @@ public class Parser {
      * @param words The array of words from user input.
      *
      * @return A <code>String</code> that indicates the response of
-     * the chatbot.
+     *      the chatbot.
      */
     private String addTask(String[] words) throws MiroException {
+        Command command;
+
         switch (words[0]) {
-            case "todo" -> {
-                Command command = new AddToDoCommand(words);
-                return command.execute(taskList, ui, storage);
-            }
-            case "deadline" -> {
-                Command command = new AddDeadlineCommand(words);
-                return command.execute(taskList, ui, storage);
-            }
-            case "event" -> {
-                Command command = new AddEventCommand(words);
-                return command.execute(taskList, ui, storage);
-            }
-            default -> throw new MiroException("Oops! This is an invalid task.");
+        case "todo":
+            command = new AddToDoCommand(words);
+            return command.execute(taskList, ui, storage);
+
+        case "deadline":
+            command = new AddDeadlineCommand(words);
+            return command.execute(taskList, ui, storage);
+
+        case "event":
+            command = new AddEventCommand(words);
+            return command.execute(taskList, ui, storage);
+
+        default:
+            throw new MiroException("Oops! This is an invalid task.");
         }
     }
 
@@ -121,7 +132,7 @@ public class Parser {
      * @param taskListSize The size of task list.
      *
      * @return A <code>boolean</code> that indicates if the task number
-     * is valid.
+     *      is valid.
      */
     private boolean isValidTaskNum(String taskNumInput, int taskListSize) throws MiroException {
         try {

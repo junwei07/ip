@@ -7,6 +7,9 @@ import miro.main.Ui;
 import miro.task.Task;
 import miro.task.ToDoTask;
 
+/**
+ * Represents a command to add a to-do task.
+ */
 public class AddToDoCommand extends Command {
     private final String[] words;
 

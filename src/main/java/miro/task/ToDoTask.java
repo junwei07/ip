@@ -1,5 +1,8 @@
 package miro.task;
 
+/**
+ * Represents a to-do task.
+ */
 public class ToDoTask extends Task {
 
     public ToDoTask(String description) {

@@ -9,6 +9,11 @@ public class Task {
     private final String description;
     private boolean isDone;
 
+    /**
+     * The constructor for the task.
+     *
+     * @param description The description of the task.
+     */
     public Task(String description) {
         this.description = description;
         this.isDone = false;
@@ -26,6 +31,7 @@ public class Task {
         this.isDone = false;
     }
 
+    @Override
     public String toString() {
         String box = isDone ? "[X]" : "[ ]";
         return box + " " + description;

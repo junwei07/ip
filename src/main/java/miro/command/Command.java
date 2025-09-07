@@ -5,6 +5,9 @@ import miro.main.Storage;
 import miro.main.TaskList;
 import miro.main.Ui;
 
+/**
+ * Represents an abstract command.
+ */
 public abstract class Command {
 
     /**

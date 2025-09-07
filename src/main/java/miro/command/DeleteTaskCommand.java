@@ -1,18 +1,18 @@
 package miro.command;
 
-import java.util.ArrayList;
-
-import miro.exception.MiroException;
 import miro.main.Storage;
 import miro.main.TaskList;
 import miro.main.Ui;
 import miro.task.Task;
 
+/**
+ * Represents a command to delete a task.
+ */
 public class DeleteTaskCommand extends Command {
     private final int index;
 
     public DeleteTaskCommand(int index) {
-        this.index  = index;
+        this.index = index;
     }
 
     @Override

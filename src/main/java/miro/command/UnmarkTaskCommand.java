@@ -5,11 +5,14 @@ import miro.main.TaskList;
 import miro.main.Ui;
 import miro.task.Task;
 
+/**
+ * Represents a command to unmark a task.
+ */
 public class UnmarkTaskCommand extends Command {
     private final Task task;
 
     public UnmarkTaskCommand(Task task) {
-        this.task  = task;
+        this.task = task;
     }
 
     @Override

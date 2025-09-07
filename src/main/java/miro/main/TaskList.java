@@ -1,17 +1,21 @@
 package miro.main;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import miro.task.Task;
 
-import java.util.ArrayList;
-
+/**
+ * Represents a task list.
+ */
 public class TaskList {
-    private final ArrayList<Task> taskList;
+    private final List<Task> taskList;
 
     public TaskList() {
         this.taskList = new ArrayList<>();
     }
 
-    public TaskList(ArrayList<Task> taskList) {
+    public TaskList(List<Task> taskList) {
         this.taskList = taskList;
     }
 
@@ -20,7 +24,7 @@ public class TaskList {
      *
      * @return The array of tasks.
      */
-    public ArrayList<Task> getTaskList() {
+    public List<Task> getTaskList() {
         return taskList;
     }
 
@@ -28,6 +32,9 @@ public class TaskList {
         taskList.add(task);
     }
 
+    /**
+     * Deletes a task from the task list.
+     */
     public void delete(int index) {
         assert index >= 0 && index < taskList.size() : "task number out of range";
 

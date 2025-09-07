@@ -7,7 +7,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
-
 import miro.main.Miro;
 
 
@@ -29,11 +28,12 @@ public class MainWindow extends AnchorPane {
     private Image userImage = new Image(this.getClass().getResourceAsStream("/images/User.png"));
     private Image miroImage = new Image(this.getClass().getResourceAsStream("/images/Miro.jpg"));
 
+    /**
+     * Initializes the dialog container.
+     */
     @FXML
     public void initialize() {
-
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
-
     }
 
     /** Injects the Miro instance */

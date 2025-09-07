@@ -10,6 +10,9 @@ import miro.task.EventTask;
 import miro.task.Task;
 import miro.utils.Utils;
 
+/**
+ * Represents a command to add an event task.
+ */
 public class AddEventCommand extends Command {
     private final String[] words;
 
@@ -63,7 +66,10 @@ public class AddEventCommand extends Command {
             throw new MiroException("Task description cannot be empty.");
         }
 
-        Task task = new EventTask(taskSb.toString().strip(), LocalDate.parse(inputFromDate), LocalDate.parse(inputToDate));
+        Task task = new EventTask(taskSb.toString().strip(),
+                                LocalDate.parse(inputFromDate),
+                                LocalDate.parse(inputToDate));
+
         taskList.add(task);
         storage.save(taskList.getTaskList());
         return ui.addTaskSuccess(task, taskList.size());

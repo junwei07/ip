@@ -5,7 +5,15 @@ import java.time.format.DateTimeParseException;
 
 import miro.exception.MiroException;
 
+/**
+ * The utils class for global methods.
+ */
 public class Utils {
+    /**
+     * Validates the date input by user.
+     *
+     * @param date The deadline of the task.
+     */
     public static boolean isValidDate(String date) throws MiroException {
         try {
             LocalDate inputDate = LocalDate.parse(date);

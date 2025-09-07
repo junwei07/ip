@@ -2,17 +2,19 @@ package miro.command;
 
 import java.util.ArrayList;
 
-import miro.exception.MiroException;
 import miro.main.Storage;
 import miro.main.TaskList;
 import miro.main.Ui;
 import miro.task.Task;
 
+/**
+ * Represents a command to search for a task.
+ */
 public class FindTaskCommand extends Command {
     private final String keyword;
 
     public FindTaskCommand(String keyword) {
-        this.keyword  = keyword;
+        this.keyword = keyword;
     }
 
     @Override

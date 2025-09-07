@@ -1,13 +1,12 @@
 package miro.command;
 
-import java.util.ArrayList;
-
-import miro.exception.MiroException;
 import miro.main.Storage;
 import miro.main.TaskList;
 import miro.main.Ui;
-import miro.task.Task;
 
+/**
+ * Represents a command to exit the program.
+ */
 public class ExitCommand extends Command {
 
     @Override
