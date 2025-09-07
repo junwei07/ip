@@ -29,6 +29,8 @@ public class TaskList {
     }
 
     public void delete(int index) {
+        assert index >= 0 && index < taskList.size() : "task number out of range";
+
         taskList.remove(index);
     }
 
@@ -38,6 +40,8 @@ public class TaskList {
      * @return The index of the task.
      */
     public Task get(int index) {
+        assert index >= 0 && index < taskList.size() : "task number out of range";
+
         return taskList.get(index);
     }
 
