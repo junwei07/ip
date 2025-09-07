@@ -1,13 +1,17 @@
 package miro.main;
 
-import miro.task.DeadlineTask;
-import miro.task.EventTask;
+import miro.command.AddDeadlineCommand;
+import miro.command.AddEventCommand;
+import miro.command.AddToDoCommand;
+import miro.command.Command;
+import miro.command.DeleteTaskCommand;
+import miro.command.ExitCommand;
+import miro.command.FindTaskCommand;
+import miro.command.GetTasksCommand;
+import miro.command.MarkTaskCommand;
+import miro.command.UnmarkTaskCommand;
+import miro.exception.MiroException;
 import miro.task.Task;
-import miro.task.ToDoTask;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
 
 /**
  * Represents a parser to parse user input.
@@ -28,229 +32,121 @@ public class Parser {
     }
 
     /**
-     * Parses the array of words from user input and carries out
-     * the corresponding tasks.
+     * Parses the array of words from user input, creates the
+     * command and executes the command.
      *
      * @param words The array of words from user input.
      *
-     * @return A boolean value to indicate whether to exit the program.
+     * @return A <code>String</code> that indicates the response of
+     * the chatbot.
      */
     public String parse(String[] words) {
-        switch (words[0]) {
-            case "list" -> {
-                return ui.printTaskList(taskList.getTaskList());
-            }
-            case "mark", "unmark" -> {
-                if (words.length == 2) {
-                    try {
-                        int taskNum = Integer.parseInt(words[1]);
+        Command command;
+        int taskNum;
 
-                        if (taskNum > 0 && taskNum <= taskList.size()) {
-                            Task task = taskList.get(taskNum - 1);
-                            if (words[0].equals("mark")) {
-                                return markTask(task);
-                            } else {
-                                return unmarkTask(task);
-                            }
-                        } else {
-                            return ui.output("Invalid command!");
-                        }
-                    } catch (NumberFormatException e) {
-                        if (words[0].equals("mark") || words[0].equals("unmark")) {
-                            return ui.output("Invalid command!");
-                        } else {
-                            return addTask(words);
-                        }
-                    }
-                }
-            }
-            case "find" -> {
-                if (words.length == 2) {
-                    return searchTask(words[1]);
+        try {
+            switch (words[0]) {
+            case "list":
+                command = new GetTasksCommand();
+                return command.execute(taskList, ui, storage);
+
+            case "mark", "unmark":
+
+                taskNum = getValidTaskNum(words, taskList);
+                Task task = taskList.get(taskNum - 1);
+
+                if (words[0].equals("mark")) {
+                    command = new MarkTaskCommand(task);
                 } else {
-                    return ui.output("Please input one keyword to search.");
+                    command = new UnmarkTaskCommand(task);
                 }
-            }
-            case "delete" -> {
-                if (words.length == 2) {
-                    try {
-                        int taskNum = Integer.parseInt(words[1]);
-                        return deleteTask(taskNum - 1);
-                    } catch (NumberFormatException e) {
-                        return ui.output("Invalid command!");
-                    }
+
+                return command.execute(taskList, ui, storage);
+
+            case "find":
+                if (words.length != 2) {
+                    throw new MiroException("Please input one keyword to search.");
                 }
-            }
-            case "bye" -> {
-                return ui.output("Goodbye. Hope to see you again!");
-            }
-            default -> {
+
+                command = new FindTaskCommand(words[1]);
+                return command.execute(taskList, ui, storage);
+
+            case "delete":
+                taskNum = getValidTaskNum(words, taskList);
+                command = new DeleteTaskCommand(taskNum - 1);
+                return command.execute(taskList, ui, storage);
+
+            case "bye":
+                command = new ExitCommand();
+                return command.execute(taskList, ui, storage);
+
+            default:
                 return addTask(words);
             }
+        } catch (MiroException e) {
+            return e.getMessage();
         }
-        return ui.output("Please input something!");
     }
 
-    private String addTask(String[] words) {
-        Task task = null;
-        StringBuilder sb = new StringBuilder();
-
+    /**
+     * Adds ToDo, Deadline, Event tasks to the task list.
+     *
+     * @param words The array of words from user input.
+     *
+     * @return A <code>String</code> that indicates the response of
+     * the chatbot.
+     */
+    private String addTask(String[] words) throws MiroException {
         switch (words[0]) {
             case "todo" -> {
-
-                for (int i = 1; i < words.length; i++) {
-                    sb.append(words[i]);
-                    sb.append(" ");
-                }
-
-                if (!sb.toString().isEmpty()) {
-                    task = new ToDoTask(sb.toString().strip());
-                } else {
-                    return ui.output("Task description cannot be empty.");
-                }
+                Command command = new AddToDoCommand(words);
+                return command.execute(taskList, ui, storage);
             }
             case "deadline" -> {
-                // find date or time
-                boolean isDate = false;
-                StringBuilder dateSb = new StringBuilder();
-                for (int i = 1; i < words.length; i++) {
-                    if (isDate) {
-                        dateSb.append(words[i]);
-                        dateSb.append(" ");
-                    } else {
-                        if (words[i].equals("/by")) {
-                            isDate = true;
-                        } else {
-                            sb.append(words[i]);
-                            sb.append(" ");
-                        }
-                    }
-                }
-                String inputDate = dateSb.toString().strip();
-
-                // check if date is specified
-                if (isDate && !inputDate.isEmpty()) {
-                    // check valid date and time
-                    if (isValidDate(inputDate)) {
-                        task = new DeadlineTask(sb.toString().strip(), LocalDate.parse(inputDate));
-                    }
-                } else if (!isDate) {
-                    return ui.output("Please specify a date using \"/by ...\"");
-                } else {
-                    return ui.output("Task description cannot be empty.");
-                }
+                Command command = new AddDeadlineCommand(words);
+                return command.execute(taskList, ui, storage);
             }
             case "event" -> {
-                boolean hasFrom = false;
-                boolean hasTo = false;
-                boolean isFrom = false;
-                boolean isTo = false;
-
-                StringBuilder fromSb = new StringBuilder();
-                StringBuilder toSb = new StringBuilder();
-
-                for (int i = 1; i < words.length; i++) {
-                    if (isFrom && !words[i].equals("/to")) {
-                        fromSb.append(words[i]);
-                        fromSb.append(" ");
-
-                    } else if (isTo) {
-                        toSb.append(words[i]);
-                        toSb.append(" ");
-                    } else {
-                        if (!words[i].equals("/from") && !words[i].equals("/to")) {
-                            sb.append(words[i]);
-                            sb.append(" ");
-                        }
-                    }
-
-                    if (words[i].equals("/from")) {
-                        hasFrom = true;
-                        isFrom = true;
-                    } else if (words[i].equals("/to")) {
-                        hasTo = true;
-                        isFrom = false;
-                        isTo = true;
-                    }
-                }
-                String inputFromDate = fromSb.toString().strip();
-                String inputToDate = toSb.toString().strip();
-
-                // check if date is valid
-                if (hasFrom && hasTo) {
-                    if (isValidDate(inputFromDate) && isValidDate(inputToDate)) {
-                        task = new EventTask(sb.toString().strip(), LocalDate.parse(inputFromDate), LocalDate.parse(inputToDate));
-                    } else {
-                        return ui.output("Invalid date. Date should be in format 'YYYY-MM-DD'");
-                    }
-                } else {
-                    return ui.output("Please specify dates using \"/from ... /to ...\"");
-                }
+                Command command = new AddEventCommand(words);
+                return command.execute(taskList, ui, storage);
             }
-            default -> {
-                return ui.output("Oops! This is an invalid task.");
-            }
+            default -> throw new MiroException("Oops! This is an invalid task.");
         }
-
-
-        if (task != null) {
-            taskList.add(task);
-            storage.save(taskList.getTaskList());
-
-            return ui.addTaskSuccess(task, taskList.size());
-        }
-        return ui.output("No task to be added.");
     }
 
-    private String deleteTask(int index) {
-        if (index >= 0 && index < taskList.size()) {
-
-            Task task = taskList.get(index);
-            taskList.delete(index);
-            storage.save(taskList.getTaskList());
-            return ui.deleteTaskSuccess(task);
-        } else {
-            storage.save(taskList.getTaskList());
-            return ui.output("Invalid command!");
-        }
-
-    }
-
-    private String searchTask(String keyword) {
-        ArrayList<Task> filteredTasks = new ArrayList<>();
-        for (Task task : taskList.getTaskList()) {
-            if (task.getDescription().contains(keyword)) {
-                filteredTasks.add(task);
-            }
-        }
-
-        return ui.searchedTasks(filteredTasks);
-    }
-
-    private String markTask(Task task) {
-        task.mark();
-        storage.save(taskList.getTaskList());
-        return ui.markTask(task);
-    }
-
-    private String unmarkTask(Task task) {
-        task.unmark();
-        storage.save(taskList.getTaskList());
-        return ui.unmarkTask(task);
-    }
-
-    private boolean isValidDate(String input) {
+    /**
+     * Validates the task number given by the user.
+     *
+     * @param taskNumInput The task number from user input.
+     * @param taskListSize The size of task list.
+     *
+     * @return A <code>boolean</code> that indicates if the task number
+     * is valid.
+     */
+    private boolean isValidTaskNum(String taskNumInput, int taskListSize) throws MiroException {
         try {
-            LocalDate inputDate = LocalDate.parse(input);
-            if (!inputDate.isBefore(LocalDate.now())) {
-                return true;
-            } else {
-                ui.output("Date cannot be in the past.");
-            }
-        } catch (DateTimeParseException e) {
-            ui.output("Invalid date. Date must be in format 'YYYY-MM-DD'.");
+            int taskNum = Integer.parseInt(taskNumInput);
+            return taskNum > 0 && taskNum <= taskListSize;
+        } catch (NumberFormatException e) {
+            throw new MiroException("Task number must be an integer!");
+        }
+    }
+
+    /**
+     * Returns the validated task number given by the user.
+     *
+     * @param words The user input.
+     * @param taskList The current task list.
+     *
+     * @return An <code>int</code> that indicates the valid task number.
+     */
+    private int getValidTaskNum(String[] words, TaskList taskList) throws MiroException {
+        if (words.length != 2 ) {
+            throw new MiroException("Input must be of length 2!");
+        } else if (!isValidTaskNum(words[1], taskList.size())) {
+            throw new MiroException("Task number is out of range!");
         }
 
-        return false;
+        return Integer.parseInt(words[1]);
     }
 }
