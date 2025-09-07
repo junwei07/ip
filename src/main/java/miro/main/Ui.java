@@ -3,6 +3,7 @@ package miro.main;
 import miro.task.Task;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Represents a UI of the app.
@@ -124,7 +125,7 @@ public class Ui {
         return outputMessage();
     }
 
-    public String searchedTasks(ArrayList<Task> tasklist) {
+    public String searchedTasks(List<Task> tasklist) {
         if (!tasklist.isEmpty()) {
             append("Here are the matching tasks in your list:");
             for (Task task : tasklist) {
