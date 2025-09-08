@@ -144,4 +144,17 @@ public class Ui {
         return outputMessage();
     }
 
+    /**
+     * Prints message when task is marked as not done.
+     *
+     * @param task The updated task.
+     *
+     * @return A string representation of the task list.
+     */
+    public String updatedTaskSuccess(Task task) {
+        append("Ok, I've updated this task");
+        append(task.toString());
+
+        return outputMessage();
+    }
 }

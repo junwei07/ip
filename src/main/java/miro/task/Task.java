@@ -1,12 +1,14 @@
 package miro.task;
 
+import miro.exception.MiroException;
+
 /**
  * Represents a task.
  * The <code>description</code> field stores the description of the task.
  * The <code>isDone</code> field indicates if the task has been marked as done.
  */
 public class Task {
-    private final String description;
+    private String description;
     private boolean isDone;
 
     /**
@@ -46,5 +48,13 @@ public class Task {
     public String getOutputFormat() {
         int marked = isDone ? 1 : 0;
         return marked + " | " + description;
+    }
+
+    public void update(String[] words) throws MiroException {
+
+    }
+
+    public void updateDescription(String description) {
+        this.description = description;
     }
 }

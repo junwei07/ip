@@ -23,36 +23,14 @@ public class AddDeadlineCommand extends Command {
     @Override
     public String execute(TaskList taskList, Ui ui, Storage storage) throws MiroException {
 
-        boolean isDate = false;
-        StringBuilder taskSb = new StringBuilder();
-        StringBuilder dateSb = new StringBuilder();
+        String[] params = Utils.getDeadlineParams(words);
+        String description = params[0];
+        String date = params[1];
 
-        for (int i = 1; i < words.length; i++) {
-            if (isDate) {
-                dateSb.append(words[i]);
-                dateSb.append(" ");
-            } else {
-                if (words[i].equals("/by")) {
-                    isDate = true;
-                } else {
-                    taskSb.append(words[i]);
-                    taskSb.append(" ");
-                }
-            }
-        }
-        String inputDate = dateSb.toString().strip();
-
-        if (!isDate || !Utils.isValidDate(inputDate)) {
-            throw new MiroException("Please specify a date using \"/by ...\"");
-        } else if (inputDate.isEmpty()) {
-            throw new MiroException("Task description cannot be empty.");
-        } else if (taskSb.isEmpty()) {
-            throw new MiroException("Task description cannot be empty.");
-        }
-
-        Task task = new DeadlineTask(taskSb.toString().strip(), LocalDate.parse(inputDate));
+        Task task = new DeadlineTask(description, LocalDate.parse(date));
         taskList.add(task);
         storage.save(taskList.getTaskList());
         return ui.addTaskSuccess(task, taskList.size());
     }
+
 }

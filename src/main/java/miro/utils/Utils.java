@@ -26,4 +26,37 @@ public class Utils {
             throw new MiroException("Invalid date. Date must be in format YYYY-MM-DD.");
         }
     }
+
+    public static String[] getDeadlineParams(String[] words) throws MiroException {
+        boolean isDate = false;
+        StringBuilder taskSb = new StringBuilder();
+        StringBuilder dateSb = new StringBuilder();
+
+        for (int i = 1; i < words.length; i++) {
+            if (isDate) {
+                dateSb.append(words[i]);
+                dateSb.append(" ");
+            } else {
+                if (words[i].equals("/by")) {
+                    isDate = true;
+                } else {
+                    taskSb.append(words[i]);
+                    taskSb.append(" ");
+                }
+            }
+        }
+        String inputDate = dateSb.toString().strip();
+
+        if (!isDate || !Utils.isValidDate(inputDate)) {
+            throw new MiroException("Please specify a date using \"/by ...\"");
+        } else if (inputDate.isEmpty()) {
+            throw new MiroException("Task description cannot be empty.");
+        } else if (taskSb.isEmpty()) {
+            throw new MiroException("Task description cannot be empty.");
+        }
+
+        return new String[]{taskSb.toString().strip(), inputDate};
+    }
+
+
 }

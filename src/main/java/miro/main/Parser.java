@@ -10,6 +10,7 @@ import miro.command.FindTaskCommand;
 import miro.command.GetTasksCommand;
 import miro.command.MarkTaskCommand;
 import miro.command.UnmarkTaskCommand;
+import miro.command.UpdateTaskCommand;
 import miro.exception.MiroException;
 import miro.task.Task;
 
@@ -84,6 +85,11 @@ public class Parser {
                 command = new DeleteTaskCommand(taskNum - 1);
                 return command.execute(taskList, ui, storage);
 
+            case "update":
+                taskNum = getValidUpdateTaskNum(words, taskList);
+                command = new UpdateTaskCommand(taskNum - 1, words);
+                return command.execute(taskList, ui, storage);
+
             case "bye":
                 command = new ExitCommand();
                 return command.execute(taskList, ui, storage);
@@ -155,6 +161,14 @@ public class Parser {
         if (words.length != 2 ) {
             throw new MiroException("Input must be of length 2!");
         } else if (!isValidTaskNum(words[1], taskList.size())) {
+            throw new MiroException("Task number is out of range!");
+        }
+
+        return Integer.parseInt(words[1]);
+    }
+
+    private int getValidUpdateTaskNum(String[] words, TaskList taskList) throws MiroException {
+        if (!isValidTaskNum(words[1], taskList.size())) {
             throw new MiroException("Task number is out of range!");
         }
 

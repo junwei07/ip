@@ -1,6 +1,6 @@
 package miro.command;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import miro.main.Storage;
 import miro.main.TaskList;
@@ -20,12 +20,9 @@ public class FindTaskCommand extends Command {
     @Override
     public String execute(TaskList taskList, Ui ui, Storage storage) {
 
-        ArrayList<Task> filteredTasks = new ArrayList<>();
-        for (Task task : taskList.getTaskList()) {
-            if (task.getDescription().contains(keyword)) {
-                filteredTasks.add(task);
-            }
-        }
+        List<Task> filteredTasks = taskList.getTaskList().stream()
+                .filter(task -> task.getDescription().contains(keyword))
+                .toList();
 
         return ui.searchedTasks(filteredTasks);
     }
