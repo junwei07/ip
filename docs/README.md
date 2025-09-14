@@ -4,7 +4,7 @@ Miro is a friendly, interactive desktop assistant that helps you manage your tas
 
 It supports adding, listing, marking, and deleting tasks, with support for deadlines and events.
 
-![Screenshot](Ui.png) <!-- Add your screenshot to docs/screenshots/miro_gui.png -->
+![Screenshot](./Ui.png) <!-- Add your screenshot to docs/screenshots/miro_gui.png -->
 
 ## Features
 
