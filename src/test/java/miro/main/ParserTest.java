@@ -1,6 +1,7 @@
 package miro.main;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -8,6 +9,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import miro.exception.MiroException;
 import miro.task.DeadlineTask;
 import miro.task.EventTask;
 import miro.task.Task;
@@ -78,10 +80,13 @@ public class ParserTest {
         expectedEventResponse.append(eventTask);
         expectedEventResponse.append("\nNow you have 6 tasks in the list.\n");
 
-        assertEquals(expectedToDoResponse.toString(), parser.parse(toDoInput));
-        assertEquals(expectedDeadlineResponse.toString(), parser.parse(deadlineInput));
-        assertEquals(expectedEventResponse.toString(), parser.parse(eventInput));
-
+        try {
+            assertEquals(expectedToDoResponse.toString(), parser.parse(toDoInput));
+            assertEquals(expectedDeadlineResponse.toString(), parser.parse(deadlineInput));
+            assertEquals(expectedEventResponse.toString(), parser.parse(eventInput));
+        } catch (MiroException e) {
+            throw new AssertionError("Unexpected MiroException: " + e.getMessage(), e);
+        }
     }
 
     @Test
@@ -92,19 +97,15 @@ public class ParserTest {
         Ui ui = new Ui();
         Parser parser = new Parser(taskList, ui, storage);
 
-
         // test todo with empty description
         String[] toDoInput = new String[]{"todo"};
-        String toDoResponse = parser.parse(toDoInput);
-
-        assertEquals("Task description cannot be empty.", toDoResponse);
+        Exception todoException = assertThrows(MiroException.class, () -> parser.parse(toDoInput));
+        assertEquals("Task description cannot be empty.", todoException.getMessage());
 
         // test deadline with no date
         String[] deadlineInput = new String[]{"deadline", "test"};
-        String deadlineResponse = parser.parse(deadlineInput);
-
-        assertEquals("Please specify a date using \"/by ...\"", deadlineResponse);
-
+        Exception deadlineException = assertThrows(MiroException.class, () -> parser.parse(deadlineInput));
+        assertEquals("Please specify a date using \"/by ...\"", deadlineException.getMessage());
     }
 
 }
