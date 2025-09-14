@@ -25,10 +25,8 @@ public class EventTaskTest {
 
     @Test
     public void parse_invalidUpdate_throwsException() {
-        // CHECKSTYLE.OFF: AbbreviationAsWordInName
         String DESCRIPTION = "event task";
         String INVALID_DATE = "2024-10-10";
-        // CHECKSTYLE.ON: AbbreviationAsWordInName
         LocalDate baseDate = LocalDate.now();
         String baseDateFormatted = baseDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 

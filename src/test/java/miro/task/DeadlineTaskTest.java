@@ -25,12 +25,9 @@ public class DeadlineTaskTest {
 
     @Test
     public void parse_invalidUpdate_throwsException() {
-        // CHECKSTYLE.OFF: AbbreviationAsWordInName
         String DESCRIPTION = "deadline task";
         String INVALID_DATE = "2024-10-10";
-        // CHECKSTYLE.ON: AbbreviationAsWordInName
         LocalDate baseDate = LocalDate.now();
-        String baseDateFormatted = baseDate.format(DateTimeFormatter.ofPattern("MMM d yyyy"));
 
         Task task = new DeadlineTask(DESCRIPTION, baseDate);
         String expected = "D | 0 | deadline task | " + baseDate;

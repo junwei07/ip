@@ -47,9 +47,7 @@ public class ParserTest {
 
     @Test
     public void parse_validInput() {
-        // CHECKSTYLE.OFF: AbbreviationAsWordInName
         String SUCCESS_MSG = "Purr-fect! I've added this task:\n";
-        // CHECKSTYLE.ON: AbbreviationAsWordInName
 
         Storage storage = new StorageStub("./data/test-output.txt");
         TaskList taskList = new TaskList(storage.load());
@@ -63,7 +61,7 @@ public class ParserTest {
 
         StringBuilder expectedToDoResponse = new StringBuilder(SUCCESS_MSG);
         expectedToDoResponse.append(todoTask);
-        expectedToDoResponse.append("\nNow you have 4 tasks.\n");
+        expectedToDoResponse.append("\n\nNow you have 4 tasks.\n");
 
         // test with valid deadline task
         LocalDate currTime = LocalDate.now();
@@ -72,7 +70,7 @@ public class ParserTest {
 
         StringBuilder expectedDeadlineResponse = new StringBuilder(SUCCESS_MSG);
         expectedDeadlineResponse.append(deadlineTask);
-        expectedDeadlineResponse.append("\nNow you have 5 tasks.\n");
+        expectedDeadlineResponse.append("\n\nNow you have 5 tasks.\n");
 
         // test with valid event task
         String[] eventInput = new String[]{"event", "test", "event", "/from", currTime.toString(),
@@ -81,7 +79,7 @@ public class ParserTest {
 
         StringBuilder expectedEventResponse = new StringBuilder(SUCCESS_MSG);
         expectedEventResponse.append(eventTask);
-        expectedEventResponse.append("\nNow you have 6 tasks.\n");
+        expectedEventResponse.append("\n\nNow you have 6 tasks.\n");
 
         try {
             assertEquals(expectedToDoResponse.toString(), parser.parse(toDoInput));
