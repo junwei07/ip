@@ -49,56 +49,53 @@ public class Parser {
      * @return A <code>String</code> that indicates the response of
      *      the chatbot.
      */
-    public String parse(String[] words) {
+    public String parse(String[] words) throws MiroException {
         Command command;
         int taskNum;
 
-        try {
-            switch (words[0]) {
-            case "list":
-                command = new GetTasksCommand();
-                return command.execute(taskList, ui, storage);
+        switch (words[0]) {
+        case "list":
+            command = new GetTasksCommand();
+            return command.execute(taskList, ui, storage);
 
-            case "mark", "unmark":
+        case "mark", "unmark":
 
-                taskNum = getValidTaskNum(words, taskList);
-                Task task = taskList.get(taskNum - 1);
+            taskNum = getValidTaskNum(words, taskList);
+            Task task = taskList.get(taskNum - 1);
 
-                if (words[0].equals("mark")) {
-                    command = new MarkTaskCommand(task);
-                } else {
-                    command = new UnmarkTaskCommand(task);
-                }
-
-                return command.execute(taskList, ui, storage);
-
-            case "find":
-                if (words.length != 2) {
-                    throw new MiroException("Please input one keyword to search.");
-                }
-
-                command = new FindTaskCommand(words[1]);
-                return command.execute(taskList, ui, storage);
-
-            case "delete":
-                taskNum = getValidTaskNum(words, taskList);
-                command = new DeleteTaskCommand(taskNum - 1);
-                return command.execute(taskList, ui, storage);
-
-            case "update":
-                taskNum = getValidUpdateTaskNum(words, taskList);
-                command = new UpdateTaskCommand(taskNum - 1, words);
-                return command.execute(taskList, ui, storage);
-
-            case "bye":
-                command = new ExitCommand();
-                return command.execute(taskList, ui, storage);
-
-            default:
-                return addTask(words);
+            if (words[0].equals("mark")) {
+                command = new MarkTaskCommand(task);
+            } else {
+                command = new UnmarkTaskCommand(task);
             }
-        } catch (MiroException e) {
-            return e.getMessage();
+
+            return command.execute(taskList, ui, storage);
+
+        case "find":
+            if (words.length != 2) {
+                throw new MiroException("Please input one keyword to search.");
+            }
+
+            command = new FindTaskCommand(words[1]);
+            return command.execute(taskList, ui, storage);
+
+        case "delete":
+            taskNum = getValidTaskNum(words, taskList);
+            command = new DeleteTaskCommand(taskNum - 1);
+            return command.execute(taskList, ui, storage);
+
+        case "update":
+            taskNum = getValidUpdateTaskNum(words, taskList);
+            command = new UpdateTaskCommand(taskNum - 1, words);
+            return command.execute(taskList, ui, storage);
+
+        case "bye":
+            command = new ExitCommand();
+            return command.execute(taskList, ui, storage);
+
+        default:
+            return addTask(words);
+
         }
     }
 

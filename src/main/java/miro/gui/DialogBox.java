@@ -58,4 +58,11 @@ public class DialogBox extends HBox {
         db.flip();
         return db;
     }
+
+    public static DialogBox getErrorDialog(String errorText, Image img) {
+        var db = new DialogBox(errorText, img);
+        db.flip();
+        db.dialog.getStyleClass().add("error-label");
+        return db;
+    }
 }

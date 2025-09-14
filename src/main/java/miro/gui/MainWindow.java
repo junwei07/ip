@@ -57,10 +57,18 @@ public class MainWindow extends AnchorPane {
     @FXML
     private void handleUserInput() {
         String input = userInput.getText();
-        String response = miro.getResponse(input);
+        String response;
+        DialogBox dialogBox;
+        try {
+            response = miro.getResponse(input);
+            dialogBox = DialogBox.getMiroDialog(response, miroImage);
+        } catch (Exception e) {
+            response = e.getMessage();
+            dialogBox = DialogBox.getErrorDialog(response, miroImage);
+        }
         dialogContainer.getChildren().addAll(
                 DialogBox.getUserDialog(input, userImage),
-                DialogBox.getMiroDialog(response, miroImage)
+                dialogBox
         );
         userInput.clear();
     }
