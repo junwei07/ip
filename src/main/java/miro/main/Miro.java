@@ -22,7 +22,7 @@ public class Miro {
      */
     public Miro() {
         this.ui = new Ui();
-        String filepath = "./data/duke.txt";
+        String filepath = "./data/miro.txt";
         Storage storage = new Storage(filepath);
 
         try {

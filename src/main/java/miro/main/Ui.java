@@ -63,7 +63,11 @@ public class Ui {
      * @param taskList The task list to output.
      */
     public String printTaskList(List<Task> taskList) {
-        append("Here are your tasks:");
+        if (taskList.isEmpty()) {
+            append("No tasks at the moment. Time for a cat nap?");
+        } else {
+            append("Here are your tasks:");
+        }
 
         for (int i = 0; i < taskList.size(); i++) {
             String str = String.format("%d. %s", i + 1, taskList.get(i).toString());
