@@ -91,7 +91,7 @@ public class Ui {
     public String addTaskSuccess(Task task, int taskCount) {
         append("Purr-fect! I've added this task:");
         append(task.toString());
-        append(String.format("Now you have %d tasks.", taskCount));
+        append(String.format("\nNow you have %d task%s.", taskCount, (taskCount == 1) ? "" : "s"));
 
         return outputMessage();
     }

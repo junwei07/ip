@@ -25,7 +25,7 @@ public class MainWindow extends AnchorPane {
 
     private Miro miro;
 
-    private Image userImage = new Image(this.getClass().getResourceAsStream("/images/User.png"));
+    private Image userImage = new Image(this.getClass().getResourceAsStream("/images/User.jpg"));
     private Image miroImage = new Image(this.getClass().getResourceAsStream("/images/Miro.jpg"));
 
     /**

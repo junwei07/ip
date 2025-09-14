@@ -22,6 +22,7 @@ public class Main extends Application {
             FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/view/MainWindow.fxml"));
             AnchorPane ap = fxmlLoader.load();
             Scene scene = new Scene(ap);
+            stage.setTitle("\uD83D\uDC31 Miro");
             stage.setScene(scene);
             stage.setMinHeight(220);
             stage.setMinWidth(417);
