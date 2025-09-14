@@ -16,6 +16,9 @@ public class Utils {
      */
     public static boolean isValidDate(String date) throws MiroException {
         try {
+            if (date.isEmpty()) {
+                throw new MiroException("Date cannot be empty.");
+            }
             LocalDate inputDate = LocalDate.parse(date);
             if (!inputDate.isBefore(LocalDate.now())) {
                 return true;

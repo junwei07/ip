@@ -58,12 +58,13 @@ public class AddEventCommand extends Command {
         String inputFromDate = fromSb.toString().strip();
         String inputToDate = toSb.toString().strip();
 
-        if (!hasFrom || !hasTo) {
-            throw new MiroException("Invalid date. Date should be in format 'YYYY-MM-DD'");
-        } else if (!Utils.isValidDate(inputFromDate) || !Utils.isValidDate(inputToDate)) {
+        if (!hasTo || !hasFrom) {
             throw new MiroException("Please specify dates using \"/from ... /to ...\"");
         } else if (taskSb.isEmpty()) {
             throw new MiroException("Task description cannot be empty.");
+        } else {
+            Utils.isValidDate(inputFromDate);
+            Utils.isValidDate(inputToDate);
         }
 
         Task task = new EventTask(taskSb.toString().strip(),
