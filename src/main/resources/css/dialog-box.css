@@ -23,5 +23,20 @@
     -fx-rotate: 0;
 }
 
+.error-label {
+    -fx-background-color: #ffdddd;
+    -fx-text-fill: #b20000;
+    -fx-font-weight: semi-bold;
+    -fx-padding: 8;
+    -fx-border-color: #b20000;
+    -fx-border-width: 2px;
+    -fx-background-radius: 1em 1em 1em 0;
+    -fx-border-radius: 1em 1em 1em 0;
+}
+
+/* Override vertical scrollbar thumb color for ScrollPane */
+.scroll-pane .scroll-bar:vertical .thumb {
+    -fx-background-color: #cccccc;
+}
 
 

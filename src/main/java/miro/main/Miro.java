@@ -1,5 +1,7 @@
 package miro.main;
 
+import miro.exception.MiroException;
+
 /**
  * Represents a Miro chatbot.
  * A <code>taskList</code> object corresponds to a list of tasks.
@@ -34,7 +36,7 @@ public class Miro {
 
     }
 
-    private void run(String input) {
+    private void run(String input) throws MiroException {
         String[] words = input.split(" ");
         miroResponse = parser.parse(words);
     }
@@ -46,7 +48,7 @@ public class Miro {
     /**
      * Generates a response for the user's chat message.
      */
-    public String getResponse(String input) {
+    public String getResponse(String input) throws MiroException {
         run(input);
         return miroResponse;
     }
