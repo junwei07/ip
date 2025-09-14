@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 public class ToDoTaskTest {
     @Test
-    public void testOutputFormat() {
+    public void parse_validInput() {
         String description = "test task";
         Task task = new ToDoTask(description);
         String expected = "T | 0 | test task";
@@ -17,5 +17,4 @@ public class ToDoTaskTest {
         expected = "T | 0 | ";
         assertEquals(expected, task.getOutputFormat());
     }
-
 }

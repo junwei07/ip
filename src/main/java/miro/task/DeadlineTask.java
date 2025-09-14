@@ -47,7 +47,7 @@ public class DeadlineTask extends Task {
             super.updateDescription(newDescription);
         }
 
-        if (!newDate.isEmpty()) {
+        if (!newDate.isEmpty() && Utils.isValidDate(newDate)) {
             this.date = LocalDate.parse(newDate);
         }
     }
