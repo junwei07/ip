@@ -30,7 +30,7 @@ public class Ui {
      *
      */
     public String greet() {
-        append("Hello! I'm Miro.");
+        append("Meow! I'm Miro, you purr-sonal assistant.");
         append("What can I do for you?");
 
         return outputMessage();
@@ -63,15 +63,19 @@ public class Ui {
      * @param taskList The task list to output.
      */
     public String printTaskList(List<Task> taskList) {
-        append("Here are the list of tasks:");
+        append("Here are your tasks:");
 
         for (int i = 0; i < taskList.size(); i++) {
             String str = String.format("%d. %s", i + 1, taskList.get(i).toString());
-
             append(str);
         }
 
+        if (taskList.size() > 5) {
+            append("That's a lot of mice to chase!");
+        }
+
         return outputMessage();
+
     }
 
     /**
@@ -81,9 +85,9 @@ public class Ui {
      * @param taskCount The number of tasks in the task list.
      */
     public String addTaskSuccess(Task task, int taskCount) {
-        append("Got it. I've added this task:");
+        append("Purr-fect! I've added this task:");
         append(task.toString());
-        append(String.format("Now you have %d tasks in the list.", taskCount));
+        append(String.format("Now you have %d tasks.", taskCount));
 
         return outputMessage();
     }
@@ -106,8 +110,9 @@ public class Ui {
      * @param task The marked task.
      */
     public String markTask(Task task) {
-        append("Good job! I've marked this task as done");
+        append("Good job! I've marked this task as done:");
         append(task.toString());
+        append("Time for a cat nap?");
 
         return outputMessage();
     }
@@ -118,8 +123,9 @@ public class Ui {
      * @param task The unmarked task.
      */
     public String unmarkTask(Task task) {
-        append("Ok, I've unmarked this task");
+        append("Ok, I've unmarked this task:");
         append(task.toString());
+        append("Back to the hunt!");
 
         return outputMessage();
     }
@@ -152,7 +158,7 @@ public class Ui {
      * @return A string representation of the task list.
      */
     public String updatedTaskSuccess(Task task) {
-        append("Ok, I've updated this task");
+        append("Ok, I've updated this task:");
         append(task.toString());
 
         return outputMessage();

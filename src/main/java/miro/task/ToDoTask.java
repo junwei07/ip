@@ -26,7 +26,7 @@ public class ToDoTask extends Task {
         // check params of input
         StringBuilder sb = new StringBuilder();
 
-        for (int i = 1; i < words.length; i++) {
+        for (int i = 2; i < words.length; i++) {
             sb.append(words[i]);
             sb.append(" ");
         }

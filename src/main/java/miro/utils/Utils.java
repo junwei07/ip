@@ -30,6 +30,25 @@ public class Utils {
         }
     }
 
+    /**
+     * Validates the 'to' and 'from' dates input by user.
+     *
+     * @param fromDate The deadline of the task.
+     * @param toDate The deadline of the task.
+     */
+    public static boolean isValidToFromDates(String fromDate, String toDate) throws MiroException {
+        if (isValidDate(fromDate) && isValidDate(toDate)) {
+            LocalDate inputFromDate = LocalDate.parse(fromDate);
+            LocalDate inputToDate = LocalDate.parse(toDate);
+
+            if (inputToDate.isBefore(inputFromDate)) {
+                throw new MiroException("Start date cannot be after end date.");
+            }
+        }
+
+        return true;
+    }
+
     public static String[] getDeadlineParams(String[] words) throws MiroException {
         boolean isDate = false;
         StringBuilder taskSb = new StringBuilder();

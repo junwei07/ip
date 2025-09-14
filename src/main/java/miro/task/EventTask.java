@@ -47,11 +47,18 @@ public class EventTask extends Task {
         String newFromDate = params[1];
         String newToDate = params[2];
 
+        System.out.println(newFromDate);
+        System.out.println(newToDate);
+
         if (!newDescription.isEmpty()) {
             super.updateDescription(newDescription);
-        } else if (!newFromDate.isEmpty()) {
+        }
+
+        if (!newFromDate.isEmpty()) {
             this.fromDate = LocalDate.parse(newFromDate);
-        } else if (!newToDate.isEmpty()) {
+        }
+
+        if (!newToDate.isEmpty()) {
             this.toDate = LocalDate.parse(newToDate);
         }
     }
@@ -90,6 +97,14 @@ public class EventTask extends Task {
         String inputFromDate = fromSb.toString().strip();
         String inputToDate = toSb.toString().strip();
 
+        if (!inputFromDate.isEmpty() && !inputToDate.isEmpty()) {
+            Utils.isValidToFromDates(inputFromDate, inputToDate);
+        } else if (!inputFromDate.isEmpty()) {
+            Utils.isValidToFromDates(inputFromDate, this.toDate.toString());
+        } else if (!inputToDate.isEmpty()) {
+            Utils.isValidToFromDates(this.fromDate.toString(), inputToDate);
+        }
+
         if (taskSb.isEmpty() && fromSb.isEmpty() && toSb.isEmpty()) {
             throw new MiroException("Nothing to update!");
         } else if (!fromSb.isEmpty() && !Utils.isValidDate(inputFromDate)) {
@@ -97,7 +112,6 @@ public class EventTask extends Task {
         } else if (!toSb.isEmpty() && !Utils.isValidDate(inputToDate)) {
             throw new MiroException("Please specify a date using \"/by ...\"");
         }
-
 
         return new String[]{taskSb.toString().strip(), inputFromDate, inputToDate};
     }

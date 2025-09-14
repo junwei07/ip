@@ -63,8 +63,7 @@ public class AddEventCommand extends Command {
         } else if (taskSb.isEmpty()) {
             throw new MiroException("Task description cannot be empty.");
         } else {
-            Utils.isValidDate(inputFromDate);
-            Utils.isValidDate(inputToDate);
+            Utils.isValidToFromDates(inputFromDate, inputToDate);
         }
 
         Task task = new EventTask(taskSb.toString().strip(),

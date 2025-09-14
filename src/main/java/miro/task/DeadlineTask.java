@@ -45,7 +45,9 @@ public class DeadlineTask extends Task {
 
         if (!newDescription.isEmpty()) {
             super.updateDescription(newDescription);
-        } else if (!newDate.isEmpty()) {
+        }
+
+        if (!newDate.isEmpty()) {
             this.date = LocalDate.parse(newDate);
         }
     }
@@ -69,9 +71,6 @@ public class DeadlineTask extends Task {
             }
         }
         String inputDate = dateSb.toString().strip();
-
-        System.out.println(taskSb.toString().strip());
-        System.out.println(inputDate);
 
         if (taskSb.isEmpty() && dateSb.isEmpty()) {
             throw new MiroException("Nothing to update!");

@@ -47,7 +47,10 @@ public class ParserTest {
 
     @Test
     public void parse_validInput() {
-        // dummy
+        // CHECKSTYLE.OFF: AbbreviationAsWordInName
+        String SUCCESS_MSG = "Purr-fect! I've added this task:\n";
+        // CHECKSTYLE.ON: AbbreviationAsWordInName
+
         Storage storage = new StorageStub("./data/test-output.txt");
         TaskList taskList = new TaskList(storage.load());
         Ui ui = new Ui();
@@ -58,27 +61,27 @@ public class ParserTest {
         String[] toDoInput = new String[]{"todo", "test", "todo"};
         Task todoTask = new ToDoTask("test todo");
 
-        StringBuilder expectedToDoResponse = new StringBuilder("Got it. I've added this task:\n");
+        StringBuilder expectedToDoResponse = new StringBuilder(SUCCESS_MSG);
         expectedToDoResponse.append(todoTask);
-        expectedToDoResponse.append("\nNow you have 4 tasks in the list.\n");
+        expectedToDoResponse.append("\nNow you have 4 tasks.\n");
 
         // test with valid deadline task
         LocalDate currTime = LocalDate.now();
         String[] deadlineInput = new String[]{"deadline", "test", "deadline", "/by", currTime.toString()};
         Task deadlineTask = new DeadlineTask("test deadline", currTime);
 
-        StringBuilder expectedDeadlineResponse = new StringBuilder("Got it. I've added this task:\n");
+        StringBuilder expectedDeadlineResponse = new StringBuilder(SUCCESS_MSG);
         expectedDeadlineResponse.append(deadlineTask);
-        expectedDeadlineResponse.append("\nNow you have 5 tasks in the list.\n");
+        expectedDeadlineResponse.append("\nNow you have 5 tasks.\n");
 
         // test with valid event task
         String[] eventInput = new String[]{"event", "test", "event", "/from", currTime.toString(),
             "/to", currTime.toString()};
         Task eventTask = new EventTask("test event", currTime, currTime);
 
-        StringBuilder expectedEventResponse = new StringBuilder("Got it. I've added this task:\n");
+        StringBuilder expectedEventResponse = new StringBuilder(SUCCESS_MSG);
         expectedEventResponse.append(eventTask);
-        expectedEventResponse.append("\nNow you have 6 tasks in the list.\n");
+        expectedEventResponse.append("\nNow you have 6 tasks.\n");
 
         try {
             assertEquals(expectedToDoResponse.toString(), parser.parse(toDoInput));

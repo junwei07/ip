@@ -155,7 +155,7 @@ public class Parser {
      * @return An <code>int</code> that indicates the valid task number.
      */
     private int getValidTaskNum(String[] words, TaskList taskList) throws MiroException {
-        if (words.length != 2 ) {
+        if (words.length != 2) {
             throw new MiroException("Input must be of length 2!");
         } else if (!isValidTaskNum(words[1], taskList.size())) {
             throw new MiroException("Task number is out of range!");
