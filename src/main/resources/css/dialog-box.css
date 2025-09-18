@@ -26,7 +26,6 @@
 .error-label {
     -fx-background-color: #ffdddd;
     -fx-text-fill: #b20000;
-    -fx-font-weight: semi-bold;
     -fx-padding: 8;
     -fx-border-color: #b20000;
     -fx-border-width: 2px;
